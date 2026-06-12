@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ctfem"
+version = "0.1.0"
+description = "Parametric axisymmetric FEM framework for HV current-transformer condition-monitoring research"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+include = ["ctfem*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+# keep the suite fast: solver tests use only the coax mesh and self-skip without
+# a complex dolfinx build.

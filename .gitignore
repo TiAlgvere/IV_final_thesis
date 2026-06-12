@@ -1,0 +1,13 @@
+results/
+*.msh
+*.tags.json
+*.xdmf
+*.h5
+*.bp/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.png
+*.parquet
+*.csv
+.ipynb_checkpoints/

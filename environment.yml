@@ -1,0 +1,22 @@
+name: ctfem
+# Complex PETSc is REQUIRED -- the electro-quasistatic solver uses complex
+# scalars (lossy permittivity).  The "petsc=*=complex*" build string pins the
+# complex variant.  Linux/macOS only (DOLFINx has no native Windows conda pkg;
+# on Windows use WSL2 or Docker).
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - fenics-dolfinx>=0.8
+  - "petsc=*=complex*"
+  - gmsh
+  - python-gmsh
+  - numpy
+  - scipy
+  - pandas
+  - pyarrow          # parquet engine for the sweep dataset
+  - pyvista
+  - matplotlib
+  - pytest
+  - pyyaml
+  - mpi4py
