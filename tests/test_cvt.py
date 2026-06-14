@@ -15,7 +15,7 @@ import os
 import numpy as np
 import pytest
 
-from ctfem.config import CVTParams, OperatingParams, DefectSpec
+from ctfem.config import CVTParams, OperatingParams, DefectSpec, MaterialParams
 from ctfem.common import run_case_2d
 from ctfem.geometry import build_cvt
 
@@ -99,3 +99,67 @@ def test_cvt_element_aging_raises_tan_delta(cvt_case):
     # all elements aged to tand 0.02 -> device tan delta rises ~10x, C barely
     assert obs_a.tan_delta > 5.0 * obs_h.tan_delta
     assert abs(obs_a.C1_pF - obs_h.C1_pF) / obs_h.C1_pF < 0.02
+
+
+def test_cvt_2d_insulator_surface_group(cvt_case):
+    _, mres, *_ = cvt_case
+    # the 2-D axisymmetric builder must tag the air-facing porcelain + shed
+    # boundary as the insulator_surface curve group (mirrors geometry3d), so the
+    # same surface-conductivity term is available for rapid 2-D sweeps.
+    assert "insulator_surface" in mres.curve_groups
+    assert mres.curve_groups["insulator_surface"] > 0
+
+
+def test_cvt_2d_pollution_raises_loss(cvt_case):
+    cvt, _, op, matdb, obs_h, msh = cvt_case
+    # obs_h was solved at the clean default (sigma_s ~ 1e-14); a conductive
+    # pollution layer opens a resistive creepage-leakage path -> tan delta rises
+    # sharply while C (capacitive) is essentially unchanged.
+    polluted = run_case_2d(msh, op, matdb=matdb, backend="skfem",
+                           materials=MaterialParams(surface_conductivity_s=1e-6))
+    assert polluted.tan_delta > 5.0 * obs_h.tan_delta
+    assert abs(polluted.C1_pF - obs_h.C1_pF) / obs_h.C1_pF < 0.02
+
+
+def test_cvt_tap_phase_displacement_peaks(cvt_case):
+    # Fault-prediction signal: the complex tap potential acquires a phase lag vs
+    # the (real) HV drive as surface leakage develops.  It is a RELAXATION peak
+    # -- maximal near the loss corner (~1e-7 S) and smaller on either side --
+    # NOT monotonic, so phase alone underreports severity past the peak.
+    cvt, _, op, matdb, _, msh = cvt_case
+    tap = cvt.tap_disc_index
+
+    def theta(ss):
+        obs = run_case_2d(msh, op, matdb=matdb, backend="skfem",
+                          materials=MaterialParams(surface_conductivity_s=ss))
+        v = obs.foil_potentials[tap - 1]
+        return np.degrees(np.arctan2(v.imag, v.real))
+
+    th0 = theta(1e-14)
+    assert abs(th0) < 1e-3                      # clean tap ~ in phase (<1 mdeg)
+    low = abs(theta(1e-9) - th0)
+    peak = abs(theta(1e-7) - th0)
+    high = abs(theta(1e-5) - th0)
+    assert peak > low                           # rises toward the loss corner
+    assert peak > high                          # then relaxes back -> non-monotonic
+
+
+def test_cvt_water_ingress_raises_loss(cvt_case):
+    # A conductive water pocket (eps_r 80, sigma 1e-4 S/m) in the oil annulus is
+    # a floating volumetric defect -- NOT a Dirichlet source.  It bridges
+    # adjacent disc potentials locally, so the device tan delta rises while the
+    # series C (set by the elements) barely moves.  The solver must stay
+    # self-consistent (both admittance estimators still agree).
+    cvt, _, op, matdb, obs_h, msh = cvt_case
+    obs_w = run_case_2d(msh, op, matdb=matdb, backend="skfem",
+                        defect=DefectSpec(kind="water_ingress", severity=1.0,
+                                          z_center=0.75, extent=0.15))
+    # headline signature: the near-equipotential conductive pocket adds a large
+    # conduction loss (tan delta jumps ~60x) -- the discriminating feature.
+    assert obs_w.tan_delta > 10.0 * obs_h.tan_delta
+    # and it bridges adjacent disc levels, so C rises modestly (a few %), but
+    # less than a full shorted-element jump N/(N-1) and in the OPPOSITE-of-zero
+    # direction from oil_contamination (which barely moves C at all).
+    dC = (obs_w.C1_pF - obs_h.C1_pF) / obs_h.C1_pF
+    assert 0.0 < dC < 0.09
+    assert obs_w.admittance_method_discrepancy < 1e-6   # no spurious BC

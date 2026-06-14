@@ -22,6 +22,7 @@ class Observables:
     foil_potential_frac: list[float] = field(default_factory=list)  # |phi|/U0
     peak_field_per_gap: list[float] = field(default_factory=list)   # V/m
     peak_field_overall: float = 0.0
+    surface_leakage_mA: float = 0.0    # insulator-surface leakage current to gnd
 
     def row(self) -> dict:
         """Flat dict for DataFrame export."""

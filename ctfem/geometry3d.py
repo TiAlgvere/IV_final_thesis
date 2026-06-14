@@ -289,8 +289,16 @@ def build_ct_3d(
         hv_names = {r.name for r in regions if r.is_hv_metal}
         gnd_names = {r.name for r in regions if r.is_ground_metal}
         foil_names = {r.name for r in regions if r.name.startswith("foil_")}
+        # exterior insulator surface = porcelain wall + weather sheds where they
+        # face the air.  This is the creepage path along which a pollution layer
+        # carries leakage current; the solver attaches a surface-conductivity
+        # term to the "insulator_surface" group (clean/negligible by default).
+        # The user asked specifically for the porcelain_shed faces; we include
+        # the inter-shed wall too so the group is the full creepage surface.
+        insulator_names = {r.name for r in regions
+                           if r.name in ("porcelain", "porcelain_shed")}
 
-        hv_s, gnd_s, ff_s, foil_s = [], [], [], []
+        hv_s, gnd_s, ff_s, foil_s, ins_s = [], [], [], [], []
         is_full = angle >= 2.0 * math.pi - 1e-9
         for stag, neigh in surf_to_vols.items():
             ns = set(neigh)
@@ -300,6 +308,10 @@ def build_ct_3d(
                 gnd_s.append(stag)
             if ns & foil_names:
                 foil_s.append(stag)
+            # exterior insulator faces: a porcelain/shed volume on one side and
+            # the air on the other (the air-facing creepage surface).
+            if (ns & insulator_names) and ("air" in ns):
+                ins_s.append(stag)
             # far field = air's only EXTERNAL boundary (single adjacent volume).
             # NB: the outer cylinder surface is symmetric so its centroid lies on
             # the axis -- do NOT filter on centroid radius (that was a bug).
@@ -319,6 +331,7 @@ def build_ct_3d(
         _add_surf_group("ground_electrode", gnd_s)
         _add_surf_group("farfield", ff_s)
         _add_surf_group("foil_surfaces", foil_s)
+        _add_surf_group("insulator_surface", ins_s)
 
         # 5. mesh sizing + generate
         _set_mesh_fields_3d(g3, region_volumes, foil_s if foil_names else [])

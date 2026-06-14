@@ -380,7 +380,13 @@ def _build_and_tag(
     gnd_curves: list[int] = []
     farfield_curves: list[int] = []
     foil_edge_curves: list[int] = []
+    insulator_curves: list[int] = []
     foil_names = {r.name for r in regions if r.name.startswith("foil_")}
+    # exterior insulator surface = air-facing porcelain wall + weather sheds
+    # (the continuous creepage path); mirrors geometry3d's insulator_surface so
+    # the same surface-conductivity term works on the 2-D axisymmetric mesh.
+    insulator_names = {r.name for r in regions
+                       if r.name in ("porcelain", "porcelain_shed")}
 
     Rf = float(g_for_fields.farfield_radius) if (g_for_fields and tag_farfield) else None
 
@@ -406,6 +412,10 @@ def _build_and_tag(
         # foil edges (for post-processing + as Distance-field sources)
         if neigh_set & foil_names:
             foil_edge_curves.append(ctag)
+        # exterior insulator face (porcelain/shed touching air): the 2-D creepage
+        # curve carrying the surface-conductivity / pollution-leakage term.
+        if not on_axis and (neigh_set & insulator_names) and "air" in neigh_set:
+            insulator_curves.append(ctag)
         # far field: a boundary curve with exactly one neighbour (air) on the
         # outer envelope (r = Rf or z extremes)
         if tag_farfield and len(neigh) == 1 and neigh[0] == "air":
@@ -422,6 +432,7 @@ def _build_and_tag(
     if tag_farfield:
         _add_curve_group("farfield", farfield_curves)
     _add_curve_group("foil_edges", foil_edge_curves)
+    _add_curve_group("insulator_surface", insulator_curves)
 
     # 6. mesh size fields
     if g_for_fields is not None:

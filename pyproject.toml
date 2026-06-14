@@ -9,6 +9,10 @@ description = "Parametric axisymmetric FEM framework for HV current-transformer 
 requires-python = ">=3.11"
 readme = "README.md"
 
+[project.optional-dependencies]
+# interactive fault-explorer dashboard (`streamlit run dashboard.py`)
+dashboard = ["streamlit", "matplotlib", "pyvista", "plotly", "stpyvista"]
+
 [tool.setuptools.packages.find]
 include = ["ctfem*"]
 

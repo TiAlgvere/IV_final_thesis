@@ -11,6 +11,11 @@ the entire pipeline (Phases 2-5) runs natively on Windows with no PETSc/WSL.
 
 3-D Cartesian weak form (cf. ctfem.solver3d): same without the 2*pi*r weight.
 
+An optional surface-conduction term (sheet conductance sigma_s on the exterior
+"insulator_surface" facet group) models the resistive leakage / pollution-layer
+path for flashover studies; see ``solve_msh_skfem``.  It is off (negligible) by
+default, so the baseline solve is unchanged.
+
 Discretisation: Lagrange P2 triangles (2-D), P1 tetrahedra by default in 3-D
 (P2 tets explode the direct-solver memory on a laptop; pass element="P2" when
 on a bigger machine).  Linear solve: scipy SuperLU (complex LU).
@@ -43,7 +48,7 @@ from typing import Optional
 import numpy as np
 import scipy.sparse as sp
 import skfem
-from skfem import Basis, BilinearForm, condense
+from skfem import Basis, BilinearForm, FacetBasis, condense
 from skfem import solve as skfem_solve
 from skfem.helpers import dot, grad
 
@@ -70,6 +75,7 @@ class SkfemSolution:
     region_per_cell: np.ndarray      # (n_cells,) region names
     centroids_rz: np.ndarray         # (n_cells, 2) cylindrical (r, z)
     axisymmetric: bool
+    surface_leakage_a: complex = 0.0  # insulator-surface leakage current [A]
 
 
 # --------------------------------------------------------------------------- #
@@ -214,6 +220,54 @@ def solve_msh_skfem(
 
     A = a_form.assemble(basis, kap=kap_qp)
 
+    # Optional surface-conduction (leakage) term on the exterior insulator
+    # surface.  Adds a Laplace-Beltrami operator with sheet conductance sigma_s
+    # to the volume EQS form:  a_s(phi, v) = INT_Gamma sigma_s grad_s(phi) .
+    # grad_s(v) dS, where grad_s = (I - n n^T) grad is the tangential (surface)
+    # gradient.  Because the volume coefficient already carries conduction
+    # (Re kappa) AND displacement (Im kappa), the SAME complex solve spans both
+    # regimes: at the clean default sigma_s ~ 1e-14 S the surface term is
+    # negligible (pure electrostatic/capacitive limit), and raising sigma_s
+    # transitions the surface toward a stationary-current (electrokinetic)
+    # leakage path -- no separate solver needed.  Skipped when the mesh has no
+    # "insulator_surface" group (2-D / shed-free meshes).
+    A_surf = None              # kept separately to extract the leakage current
+    sigma_s = getattr(materials, "surface_conductivity_s", 0.0)
+    str_sigma = getattr(materials, "streamer_sigma_s", 0.0)
+    if (sigma_s or str_sigma) and mesh.boundaries \
+            and "insulator_surface" in mesh.boundaries:
+        fbasis = FacetBasis(mesh, elem,
+                            facets=mesh.boundaries["insulator_surface"])
+        th_c = getattr(materials, "streamer_theta_center", 0.0)
+        th_w = getattr(materials, "streamer_theta_extent", 0.0)
+        z_rng = getattr(materials, "streamer_z_range", None)
+
+        @BilinearForm(dtype=np.complex128)
+        def surf_form(u, v, w):
+            n = w.n
+            gu, gv = grad(u), grad(v)
+            gut = gu - dot(gu, n) * n      # tangential (surface) gradient
+            gvt = gv - dot(gv, n) * n
+            # per-quadrature-point sheet conductance: the uniform layer sigma_s
+            # everywhere, raised to the streamer value inside its azimuthal+axial
+            # window (3-D only; the 2-D ring has no azimuth to localize).
+            ss = sigma_s
+            if (not axisym) and str_sigma > 0.0:
+                theta = np.arctan2(w.x[1], w.x[0])
+                dth = (theta - th_c + np.pi) % (2.0 * np.pi) - np.pi
+                in_win = np.abs(dth) <= 0.5 * th_w
+                if z_rng is not None:
+                    in_win = in_win & (w.x[2] >= z_rng[0]) & (w.x[2] <= z_rng[1])
+                ss = np.where(in_win, str_sigma, sigma_s)
+            integrand = ss * dot(gut, gvt)
+            # axisymmetric: the creepage curve revolves into a surface, dS=2 pi r ds
+            if axisym:
+                integrand = integrand * (2.0 * np.pi * w.x[0])
+            return integrand
+
+        A_surf = surf_form.assemble(fbasis)
+        A = A + A_surf
+
     # Dirichlet sets: hv_electrode -> U0 ; ground_electrode + farfield -> 0.
     # The symmetry axis r=0 is natural (the 2 pi r weight vanishes there).
     hv = _boundary_dofs(basis, mesh, ("hv_electrode",))
@@ -230,10 +284,16 @@ def solve_msh_skfem(
     D = np.unique(np.concatenate([hv, gnd]))
     phi = skfem_solve(*condense(A, b, x=x, D=D))   # SuperLU (complex direct)
 
+    # Surface leakage current to ground [A]: the surface admittance's share of
+    # the terminal current, I_surf = (phi^T A_surf phi)/U0 (same non-conjugated
+    # energy identity phi^T A phi = U0 I used for the terminal admittance).  In
+    # 2-D the 2 pi r weight in A_surf makes this the full revolved-ring current.
+    leak = complex(phi @ (A_surf @ phi)) / u0 if A_surf is not None else 0.0
+
     return SkfemSolution(
         phi=phi, mesh=mesh, basis=basis, A=A, hv_dofs=hv,
         omega=operating.omega, u0=u0, region_per_cell=rpc,
-        centroids_rz=rz, axisymmetric=axisym)
+        centroids_rz=rz, axisymmetric=axisym, surface_leakage_a=leak)
 
 
 # --------------------------------------------------------------------------- #
@@ -297,4 +357,5 @@ def compute_observables_skfem(
         Y=complex(Y_energy), C1_pF=C1 * 1e12, tan_delta=float(tand),
         Y_reaction=complex(Y_react), admittance_method_discrepancy=float(disc),
         foil_potentials=pots, foil_potential_frac=fracs,
-        peak_field_per_gap=peaks, peak_field_overall=overall)
+        peak_field_per_gap=peaks, peak_field_overall=overall,
+        surface_leakage_mA=abs(sol.surface_leakage_a) * 1e3)

@@ -449,6 +449,25 @@ class MaterialParams:
     )
     foil_material: str = "metal"
     temperature_c: float = 20.0
+    # Surface conductivity sigma_s [S] (sheet conductance) of the exterior
+    # insulator surface -- the gmsh "insulator_surface" facet group built by
+    # geometry3d.  Models the resistive leakage path for environmental-tracking
+    # / pollution-flashover studies.  Default = an ideal CLEAN, dry surface
+    # (negligible leakage, pure-electrostatic limit); raise it (e.g.
+    # 1e-9..1e-3 S) to represent a wetted/contaminated pollution layer.  The
+    # solver only adds the surface term when the mesh carries that group, so 2-D
+    # and shed-free meshes are unaffected.
+    surface_conductivity_s: float = 1.0e-14   # S (clean-surface baseline)
+    # Localized "bird streamer" (Type B transient fault): a high-conductance
+    # wet streak running down ONE side of the insulator, superimposed on the
+    # uniform surface layer.  It is azimuthally + axially windowed on the
+    # insulator_surface group (3-D only -- a streak breaks rotational symmetry,
+    # so the axisymmetric 2-D model can only carry the uniform ring).
+    # streamer_sigma_s is the streak's SHEET conductance [S]; set 0 to disable.
+    streamer_sigma_s: float = 0.0                    # S (0 = no streamer)
+    streamer_theta_center: float = 0.0               # rad
+    streamer_theta_extent: float = math.radians(15.0)  # rad (azimuthal width)
+    streamer_z_range: Optional[tuple[float, float]] = None  # (z_lo, z_hi) m
 
 
 # --------------------------------------------------------------------------- #

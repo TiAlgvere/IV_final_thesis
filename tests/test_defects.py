@@ -106,6 +106,56 @@ def test_full_ring_default_ignores_azimuth():
     assert np.allclose(a, b)
 
 
+def _toy_oil_cells(n=200, z_lo=0.55, z_hi=1.61):
+    """Synthetic oil cells spanning the CVT oil annulus axially."""
+    rng = np.random.default_rng(0)
+    r = rng.uniform(0.075, 0.095, n)        # stack_radius .. porcelain_inner
+    z = rng.uniform(z_lo, z_hi, n)
+    centroids = np.column_stack([r, z])
+    region = np.array(["oil"] * n, dtype=object)
+    matdb = MaterialDB.default()
+    op = OperatingParams()
+    kappa = np.full(n, matdb.kappa_map(op.omega)["oil"], dtype=np.complex128)
+    return centroids, region, kappa, matdb, op
+
+
+def test_water_ingress_is_volumetric_not_dirichlet():
+    # A water pocket is a pure cell-level kappa override on the OIL volume: cells
+    # inside the axial window change, the rest are untouched, and nothing is
+    # pinned to a potential (apply_defect never returns a BC, only kappa).
+    c, region, kappa, matdb, op = _toy_oil_cells()
+    spec = DefectSpec(kind="water_ingress", severity=1.0,
+                      z_center=0.75, extent=0.12)
+    out = apply_defect(spec, c, region, kappa, matdb, op, MaterialParams())
+    inside = np.abs(c[:, 1] - 0.75) <= 0.12
+    assert np.any(inside)
+    assert not np.allclose(out[inside], kappa[inside], atol=0.0)
+    assert np.allclose(out[~inside], kappa[~inside], atol=0.0)
+    # eps_r 2.2 -> 80: the displacement (imag) part jumps ~36x
+    assert out[inside].imag.mean() > 30.0 * kappa[inside].imag.mean()
+    # sigma 0 -> 1e-4 S/m dominates the real (loss) part: kappa.real ~ 1e-4,
+    # vastly above the oil baseline (w*eps0*eps_r*tand ~ 1e-12)
+    assert np.allclose(out[inside].real, spec.defect_sigma, rtol=1e-6)
+
+
+def test_water_ingress_only_touches_oil():
+    # the same axial window in PAPER must be ignored (the pocket lives in oil)
+    c, _, kappa, matdb, op = _toy_oil_cells()
+    region = np.array(["paper_insulation"] * c.shape[0], dtype=object)
+    spec = DefectSpec(kind="water_ingress", severity=1.0,
+                      z_center=0.75, extent=0.12)
+    out = apply_defect(spec, c, region, kappa, matdb, op, MaterialParams())
+    assert np.allclose(out, kappa, atol=0.0)
+
+
+def test_water_ingress_zero_severity_noop():
+    c, region, kappa, matdb, op = _toy_oil_cells()
+    spec = DefectSpec(kind="water_ingress", severity=0.0,
+                      z_center=0.75, extent=0.12)
+    out = apply_defect(spec, c, region, kappa, matdb, op, MaterialParams())
+    assert np.allclose(out, kappa, atol=0.0)
+
+
 def test_none_is_noop():
     g, c, region, kappa, matdb, op = _toy_paper_cells()
     out = apply_defect(DefectSpec(kind="none"), c, region, kappa, matdb, op,

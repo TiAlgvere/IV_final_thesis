@@ -58,6 +58,10 @@ def export_vtu(sol, indicator: np.ndarray, vtu_path: str) -> None:
     phi_nodes = sol.phi[sol.basis.nodal_dofs[0]]
     gradphi = _p1_gradient(sol.mesh, phi_nodes)
     emag = np.sqrt((np.abs(gradphi) ** 2).sum(axis=0))   # V/m per cell
+    # local phase angle [milliradians] of the complex nodal potential vs the
+    # (real) HV drive: theta = arctan2(phi_im, phi_re).  Shows WHERE the phase
+    # vector twists during a lossy/polluted run (the relaxation-peak hot spots).
+    phi_phase_mrad = np.arctan2(phi_nodes.imag, phi_nodes.real) * 1e3
 
     region_names = sorted(set(sol.region_per_cell))
     rid = {n: i for i, n in enumerate(region_names)}
@@ -69,7 +73,8 @@ def export_vtu(sol, indicator: np.ndarray, vtu_path: str) -> None:
     meshio.write(vtu_path, meshio.Mesh(
         points=sol.mesh.p.T,
         cells=[("tetra", sol.mesh.t.T)],
-        point_data={"phi_kV": np.real(phi_nodes) / 1e3},
+        point_data={"phi_kV": np.real(phi_nodes) / 1e3,
+                    "phi_phase_mrad": phi_phase_mrad},
         cell_data={"E_kV_mm": [emag / 1e6],
                    "defect": [indicator],
                    "region": [region_ids],
@@ -120,18 +125,41 @@ def screenshot(vtu_path: str, png_path: str, field: str) -> None:
     pl.close()
 
 
-def show_interactive(vtu_path: str, field: str) -> None:
-    """Interactive window: draggable clip plane + defect at its true potential."""
+def show_interactive(vtu_path: str, field: str = "phi_kV") -> None:
+    """Interactive window: draggable clip plane + a key to toggle scalar fields.
+
+    Press 't' to cycle the coloured field -- potential magnitude ``phi_kV`` <->
+    phase angle ``phi_phase_mrad`` <-> field ``E_kV_mm`` -- so a polluted run
+    shows both WHERE the potential sits and WHERE the phase vector twists hardest
+    along the geometry.  `field` selects the one shown first.
+    """
     import pyvista as pv
     dev, _ = device_grid(vtu_path)
-    clim = dev.get_data_range(field)
+    candidates = ["phi_kV", "phi_phase_mrad", "E_kV_mm"]
+    fields = [f for f in candidates
+              if f in dev.point_data or f in dev.cell_data] or [field]
+    state = {"i": fields.index(field) if field in fields else 0}
+
     pl = pv.Plotter(window_size=(1280, 960))
-    if _add_defect_actor(pl, dev, field, clim):
-        pl.add_legend()
-    pl.add_mesh_clip_plane(dev, scalars=field, cmap="turbo", clim=clim,
-                           assign_to_axis="y", invert=True,
-                           show_edges=False)
-    pl.add_axes()
-    print("[viz3d] interactive window open: drag the plane through the device,"
-          " rotate with the mouse, scroll to zoom. Close the window to exit.")
+
+    def _draw() -> None:
+        pl.clear()
+        f = fields[state["i"]]
+        clim = dev.get_data_range(f)
+        _add_defect_actor(pl, dev, f, clim)
+        pl.add_mesh_clip_plane(dev, scalars=f, cmap="turbo", clim=clim,
+                               assign_to_axis="y", invert=True, show_edges=False)
+        pl.add_axes()
+        pl.add_text(f"field: {f}   (press 't' to toggle)", name="_label",
+                    font_size=10)
+        pl.render()
+
+    def _toggle() -> None:
+        state["i"] = (state["i"] + 1) % len(fields)
+        _draw()
+
+    pl.add_key_event("t", _toggle)
+    _draw()
+    print("[viz3d] interactive window: 't' toggles field "
+          f"({' / '.join(fields)}); drag the clip plane, rotate, scroll to zoom.")
     pl.show()

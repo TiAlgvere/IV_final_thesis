@@ -380,3 +380,95 @@ error signs the section**: +9.2 % for a short in C1, −45.6 % for a short in th
 **element_aging** — tan δ 0.002 → 0.02 at severity 1 with C unchanged.  Oil
 contamination barely registers (the series path is inside the elements, unlike
 the CT) — itself a discriminating feature between device architectures.
+**water_ingress** — a free-water pocket (ε_r 80, σ 1e-4 S/m) low in the oil
+column, injected as a *volumetric* κ override that **floats** at the
+field-imposed potential (never a Dirichlet source).  At 50 Hz σ/(ω ε₀ ε_r) ≫ 1,
+so the pocket is near-equipotential and bridges adjacent disc levels: measured
+tan δ 0.002 → 0.122 (≈60×), C +5.7 %, tap ratio −6.9 % — a strong, distinctive
+dual (loss + capacitance) signature, in contrast to oil contamination.
+
+**Fault prediction — tap phase displacement (`--phase-sweep`).** The complex
+solve makes the C1/C2 tap potential complex, so its phase vs the (real) HV drive,
+theta = arctan2(phi_im, phi_re), is the CVT phase displacement tracked for online
+monitoring.  `python scripts/phase7_cvt.py --phase-sweep` sweeps the surface
+conductivity and tabulates the tap phase shift (CSV + plot).  Key result: the
+shift is **non-monotonic** — a relaxation peak of about -17 mdeg (~ -0.29 mrad,
+~ 1 arcmin) at sigma_s ~ 1e-7 S (the Elering / IEC 60815 "Medium" class), then it
+relaxes back as the resistive path dominates, while terminal tan delta rises
+monotonically (-> 1.6 at sigma_s 1e-5 S).  So tap phase is a sensitive
+*early-warning* indicator but must be read together with tan delta / |V| to
+resolve severity beyond the peak.
+
+**Surface leakage current (`surface_leakage_mA`).** The solver also extracts the
+physical leakage current flowing along the insulator surface to ground,
+I_surf = (phi^T A_surf phi)/U0 (the surface admittance's share of the terminal
+current; in 2-D the 2 pi r weight makes it the full-ring current).  Logged in the
+`--phase-sweep` / `--streamer` tables and the defect CSV.  This is the
+*alternative* diagnostic to phase displacement: measured `--phase-sweep` shows it
+is **monotonic across four decades** (0.02 -> 0.2 -> 2 -> 20 -> 198 mA as
+sigma_s 1e-9 -> 1e-5), an unambiguous severity gauge -- but reading it needs a
+leakage-current sensor installed at the insulator base, whereas the phase
+displacement rides existing secondary telemetry.  NB: a *localized* top-shed
+streamer carries ~0 leakage (it does not bridge the path to ground) -- so it is
+near-invisible to leakage current AND phase AND tan delta, visible only in the
+local phase field.
+
+**Type A vs Type B pollution (`--streamer`).** Estonia's 110 kV flashovers split
+into uniform weather pollution (Type A) and sudden biological "bird streamer"
+contamination (Type B, TalTech).  Type A is the uniform `--surface-sigma` ring.
+Type B is a localized conductive streak, modelled as an azimuthally + axially
+windowed sheet conductance on `insulator_surface` (3-D only -- it breaks the
+rotational symmetry).  `python scripts/phase7_cvt.py --streamer` (defaults:
+sigma 0.5 S/m, 0.2 mm film, 15 deg wide, upper 4 sheds) compares both against a
+clean baseline.  Result — **the discriminator is the tan delta channel**: a
+localized streak shifts the tap phase (scaling with the creepage span it
+bridges) yet, wetting only ~4 % of the ring, leaves terminal **tan delta at the
+clean value**, whereas a uniform layer spikes tan delta.  So *phase shift with
+flat tan delta* fingerprints the localized stork streamer (consistent with
+TalTech's "indefinite faults": near-zero terminal loss warning before
+flashover), while *phase shift + tan delta rise* signs uniform weathering.  The
+3-D solve also exports a nodal **`phi_phase_mrad`** phase-angle field; the
+PyVista viewer's `t` key toggles between `phi_kV`, the phase field (where the
+streak's local twist is visible) and `E_kV_mm`.
+
+**Lumped CVT circuit -> measurable secondary signal (`--circuit`).** The FEA
+resolves only the C1/C2 divider; a real CVT adds a series compensating reactor L
+(tuned to resonate with C_eq = C1+C2 at 50 Hz), an intermediate VT and a burden.
+`ctfem/cvt_circuit.py` recovers C1, C2 from the FEA terminal C and tap fraction,
+tunes the reactor on the healthy state, then evaluates faults with that fixed L,
+so a capacitance-shifting fault DETUNES the reactor.  This turns the tiny
+divider-node phase into the metrology quantities actually measured at the
+secondary -- ratio error [%] and phase displacement [arc-minutes] (IEC 61869-5).
+`python scripts/phase7_cvt.py --circuit` reports them for the defect set; the
+signature library (25 VA burden) is: shorted C1 +9.1 % ratio, **shorted C2
+-45.7 % ratio / -17.5 arcmin** (catastrophic divider collapse), water ingress
+-7.0 % / -1.5 arcmin, element aging ~0 % / +0.5 arcmin (loss only), oil
+contamination ~0.  These are the templates to match against online metering.
+
+**Interactive dashboard (`streamlit run dashboard.py`).** A visual fault explorer
+(`pip install -e .[dashboard]`).  Left sidebar: fault controls.  Top "Map": the
+fault-signature scatter (ratio error vs phase displacement) through the lumped
+circuit -- the **burden slider recomputes it instantly** from cached FEA
+observables (no re-solve).  Bottom "Physics": the 3-D `phi_phase_mrad` field of
+your last run (the **Run Simulation** button triggers a fresh FEA solve).  The
+compute layer is `ctfem/dashboard_data.py` (no Streamlit import, unit-tested);
+the UI runs in 3-D on one cached scikit-fem mesh.  NB: gmsh's SIGINT handler is
+neutralised when the mesh build runs off Streamlit's worker thread.
+
+*Detectability controls* (all instant, circuit-only): **Internal faults** (C1/C2
+element shorting %, internal moisture %) perturb C1/C2 -> a live "operating
+point" star on the map; **Grid conditions** (ambient temperature shifting both
+the capacitance AND the tan delta via oil-paper temperature coefficients, grid
+frequency 49.8-50.2 Hz which detunes the reactor) are the noise.  The map shades
+the fault-free sweep over temperature x frequency x **burden (+/-5 %)**,
+Minkowski-summed with an **instrument-resolution box** (PMU/metering trending
+limits), as a grey **convex-hull noise floor** (the true swept locus, tighter
+than a bounding box).  A point-in-polygon test flags *detectable* once the
+operating-point star leaves the hull, and the tan delta thermal-drift band is
+reported so a pollution/moisture tan delta rise must clear summer heat to avoid
+false positives.
+
+`scripts/phase8_detectability.py` sweeps each fault from zero severity up and
+writes the **minimum detection threshold** (the severity at which the marker
+first leaves the noise floor) to `detectability_thresholds.csv` -- the headline
+table for the detectability chapter.
