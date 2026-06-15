@@ -5,13 +5,28 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ctfem"
 version = "0.1.0"
-description = "Parametric axisymmetric FEM framework for HV current-transformer condition-monitoring research"
+description = "Parametric axisymmetric FEM framework for HV instrument-transformer condition-monitoring research"
 requires-python = ">=3.11"
 readme = "README.md"
+# Core: the Windows-native scikit-fem pipeline (no PETSc/DOLFINx needed).
+dependencies = [
+    "numpy",
+    "scipy",
+    "gmsh",
+    "scikit-fem",
+    "meshio",
+    "matplotlib",
+]
 
 [project.optional-dependencies]
 # interactive fault-explorer dashboard (`streamlit run dashboard.py`)
 dashboard = ["streamlit", "matplotlib", "pyvista", "plotly", "stpyvista"]
+# 3-D field rendering (PyVista/ParaView VTU)
+viz = ["pyvista"]
+# Phase-5 parameter sweep -> parquet dataset
+sweep = ["pandas", "pyarrow"]
+# test suite
+dev = ["pytest"]
 
 [tool.setuptools.packages.find]
 include = ["ctfem*"]

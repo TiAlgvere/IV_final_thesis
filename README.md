@@ -23,6 +23,38 @@ signatures for predictive diagnostics and downstream ML.
 
 ---
 
+## Quick start
+
+```powershell
+# 1. virtual environment + editable install (core + dashboard/viz/sweep/test extras)
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -e ".[dashboard,viz,sweep,dev]"
+
+# 2. CVT (Arteche DDB-123) fault-signature library + field/ladder figures
+python scripts/phase7_cvt.py                 # healthy + defect set
+python scripts/phase7_cvt.py --circuit       # measurable secondary ratio/phase (lumped circuit)
+python scripts/phase7_cvt.py --phase-sweep   # tap phase displacement vs surface pollution
+python scripts/phase7_cvt.py --streamer      # Type A uniform vs Type B localized pollution (3-D)
+
+# 3. detectability study (headline thesis tables -> results/*/*.csv)
+python scripts/phase8_detectability.py       # minimum detection threshold per fault
+python scripts/phase8_instrument_sweep.py    # threshold vs instrument resolution
+python scripts/phase9_statespace.py          # degradation state-space trajectory + derivative
+
+# 4. interactive fault explorer (browser)
+streamlit run dashboard.py
+
+# 5. test suite
+pytest
+```
+
+Everything above runs **natively on Windows** (pure scikit-fem + scipy, complex-
+native; no PETSc/WSL). Each script writes a timestamped folder under `results/`
+(git-ignored). The 110 kV CVT is the primary thesis device (Section 10); the
+245 kV CT (Sections 1–9) is the original validation vehicle.
+
+---
+
 ## 1. Physics model and its limits
 
 ### Formulation
@@ -95,12 +127,15 @@ Two interchangeable FEM backends implement the same physics and observables;
 `detect_backend("auto")` picks whichever is available, so all scripts run
 unmodified on a Windows laptop and on a Linux cluster.
 
-### Windows-native (default on a laptop) — scikit-fem backend
+### Windows-native (default, recommended) — scikit-fem backend
 ```powershell
-pip install numpy scipy gmsh scikit-fem meshio pandas pyarrow matplotlib pytest
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -e ".[dashboard,viz,sweep,dev]"
 ```
-Pure Python (scipy sparse LU, complex-native). The full pipeline — Phases 1–5,
-all tests, plots — runs natively on Windows with this alone.
+This installs the package plus every tool used by this thesis. Pure Python (scipy
+sparse LU, complex-native): the **entire pipeline — Phases 1–9, the dashboard,
+all tests and figures — runs natively on Windows with this alone** (no PETSc, no
+WSL). Core deps only (no dashboard/3-D): `pip install -e .`.
 
 ### Linux/WSL/HPC (optional, for large 3-D + MPI) — DOLFINx backend
 DOLFINx + a **complex** PETSc build:
@@ -145,8 +180,22 @@ python scripts/phase5_sweep.py --out results/dataset.parquet --workers 8
 python scripts/phase5_sweep.py --design lhs --n 256 --workers 8   # Latin-hypercube
 
 # Phase 7 — Arteche DDB-123 CVT (110 kV Estonia): nameplate validation + defects
-python scripts/phase7_cvt.py                      # 2-D healthy + defect set
-python scripts/phase7_cvt.py --solve-3d --show    # + interactive 3-D window
+python scripts/phase7_cvt.py                      # 2-D healthy + defect set, plots
+python scripts/phase7_cvt.py --circuit            # lumped-circuit secondary ratio/phase signatures
+python scripts/phase7_cvt.py --phase-sweep        # tap phase displacement vs pollution (CSV + plot)
+python scripts/phase7_cvt.py --surface-sigma 1e-6 # uniform pollution layer (Type A)
+python scripts/phase7_cvt.py --streamer           # Type A vs Type B "stork streamer" (3-D)
+python scripts/phase7_cvt.py --solve-3d --show    # interactive 3-D field window
+
+# Phase 8 — detectability vs the weather + load + instrument noise floor
+python scripts/phase8_detectability.py            # minimum detection threshold per fault
+python scripts/phase8_instrument_sweep.py         # threshold vs instrument resolution
+
+# Phase 9 — pollution degradation state-space trajectory + velocity/derivative
+python scripts/phase9_statespace.py
+
+# Interactive fault-explorer dashboard (browser)
+streamlit run dashboard.py
 ```
 
 Mesh presets: `coarse | medium | fine | ultrafine` (global refinement factor).
@@ -176,21 +225,30 @@ self-skip where a complex DOLFINx build is unavailable.
 
 ```
 ct-fem/
-  environment.yml
+  pyproject.toml         # package metadata + dependencies (pip install -e .)
+  environment.yml        # optional conda env for the DOLFINx/PETSc backend
+  dashboard.py           # Streamlit interactive fault explorer
   ctfem/
-    config.py        # dataclasses: GeometryParams, OperatingParams, MaterialParams, DefectSpec, CaseConfig
-    materials.py     # complex-permittivity material DB + (σ + jωε) helper
-    geometry.py      # gmsh parametric builder -> .msh + name->tag sidecar; coax validator
-    eqs_solver.py    # axisymmetric EQS solver (DOLFINx, complex PETSc)
-    observables.py   # terminal admittance -> C1, tanδ; foil ladder; field stress
-    defects.py       # material-level defect injection (per cell)
-    sweep.py         # Cartesian/LHS sweep engine -> parquet/CSV with provenance
-    validate.py      # coax analytic benchmark + mesh-convergence study
-    viz.py           # optional PyVista/matplotlib plotting (headless)
-    util.py          # results dirs, JSON dump
-  scripts/           # phase1..5 CLI entry points
-  tests/             # pytest (coax-only, fast)
-  results/           # gitignored
+    config.py            # dataclasses: Geometry/CVT/Operating/Material/DefectSpec
+    materials.py         # complex-permittivity material DB + (σ + jωε) helper
+    geometry.py          # 2-D gmsh builder (CT, CVT, coax) -> .msh + tag sidecar
+    geometry3d.py        # 3-D revolved builder (insulator_surface, secondary box)
+    skfem_solver.py      # Windows-native EQS solver (scikit-fem; 2-D + 3-D)
+    eqs_solver.py        # 2-D EQS solver (DOLFINx, complex PETSc)
+    solver3d.py          # 3-D EQS solver (DOLFINx)
+    common.py            # backend selection + unified run_case_2d/3d entry points
+    observables.py       # terminal admittance -> C1, tanδ; ladder; field stress
+    obs_types.py         # backend-independent Observables dataclass
+    defects.py           # material-level defect injection (per cell)
+    cvt_circuit.py       # lumped CVT (reactor+IVT+burden) -> secondary ratio/phase
+    dashboard_data.py    # dashboard compute layer (operating point, noise hull)
+    sweep.py             # Cartesian/LHS sweep engine -> parquet/CSV with provenance
+    validate.py          # coax analytic benchmark + mesh-convergence study
+    viz.py, viz3d.py     # matplotlib + PyVista plotting (headless / interactive)
+    util.py              # results dirs, JSON dump
+  scripts/               # phase1..9 CLI entry points
+  tests/                 # pytest (scikit-fem; runs on Windows)
+  results/               # timestamped run outputs (gitignored)
 ```
 
 ---
