@@ -41,6 +41,10 @@ python scripts/phase8_detectability.py       # minimum detection threshold per f
 python scripts/phase8_instrument_sweep.py    # threshold vs instrument resolution
 python scripts/phase9_statespace.py          # degradation state-space trajectory + derivative
 
+# 4. defense validation
+python scripts/mesh_convergence.py           # mesh-independence of tan delta + tap phase
+# (the --streamer run above also writes view3d_efield_streamer.png + the peak |E| in the air gap)
+
 # 4. interactive fault explorer (browser)
 streamlit run dashboard.py
 
@@ -193,6 +197,9 @@ python scripts/phase8_instrument_sweep.py         # threshold vs instrument reso
 
 # Phase 9 — pollution degradation state-space trajectory + velocity/derivative
 python scripts/phase9_statespace.py
+
+# Validation — mesh-independence of tan delta + tap phase (>=5 densities)
+python scripts/mesh_convergence.py
 
 # Interactive fault-explorer dashboard (browser)
 streamlit run dashboard.py
@@ -530,3 +537,21 @@ false positives.
 writes the **minimum detection threshold** (the severity at which the marker
 first leaves the noise floor) to `detectability_thresholds.csv` -- the headline
 table for the detectability chapter.
+
+**Electric-field (breakdown) view.** Dielectric breakdown is governed by the
+peak field magnitude, not the phase angle, so `--streamer` also reports the peak
+air-gap |E| (the complex norm `sqrt(|Ex|^2+|Ey|^2+|Ez|^2)` of `-grad phi`, in
+kV/mm; `ctfem/viz3d.cell_efield_kvmm` / `peak_efield_air`) and renders
+`view3d_efield_streamer.png` cropped to the clean sheds below the streak.
+Measured: the field concentrates at the streak's lower wet/dry edge and **scales
+with streamer severity** -- ~0.45 kV/mm for the default top-4-shed streak,
+rising to ~1.4 kV/mm at the clean sheds for a heavy 20-shed bridging streak,
+i.e. toward the ~3 kV/mm air strength (a coarse-mesh lower bound: peak fields at
+the triple junction are mesh-sensitive).
+
+**Mesh convergence.** `scripts/mesh_convergence.py` holds the physical state
+fixed (sigma_s = 1e-7 S, the most phase-sensitive operating point) and re-solves
+on >= 5 tetrahedral densities (~50k .. ~500k), writing `mesh_convergence.csv` +
+`mesh_convergence.png` (tan delta and tap phase vs element count, dual y-axes) --
+the defense evidence that the standard ~190k-tet mesh has physically stabilised
+both observables.

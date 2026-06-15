@@ -141,3 +141,21 @@ def test_phase_field_exported_to_vtu(cvt3d_mesh, tmp_path):
     m = meshio.read(vtu)
     assert "phi_phase_mrad" in m.point_data
     assert "phi_kV" in m.point_data
+    assert "E_kV_mm" in m.cell_data        # field-magnitude (breakdown) channel
+
+
+def test_peak_efield_air_is_physical(cvt3d_mesh):
+    # |E| = complex norm of -grad(phi); the air-gap peak must be finite, positive,
+    # and in a sane range for a 71 kV device (well within the ~3 kV/mm air limit
+    # at this mild/coarse case), located inside the near-device window.
+    from ctfem.viz3d import cell_efield_kvmm, peak_efield_air
+    c, _, msh = cvt3d_mesh
+    op = OperatingParams(um_kv=123.0)
+    matdb = c.material_db()
+    _, sol, _ = run_case_3d(msh, op, matdb=matdb, backend="skfem",
+                            return_solution=True)
+    e = cell_efield_kvmm(sol)
+    assert np.all(np.isfinite(e)) and float(e.max()) > 0.0
+    peak, loc = peak_efield_air(sol, r_max=0.40)
+    assert loc is not None and 0.0 < peak < 10.0
+    assert loc[0] <= 0.40                   # within the queried radius

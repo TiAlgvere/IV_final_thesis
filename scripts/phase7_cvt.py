@@ -190,7 +190,7 @@ def _streamer_compare(args, op: OperatingParams, matdb, out: str) -> dict:
     """
     from ctfem.geometry3d import build_cvt_3d
     from ctfem.viz3d import defect_indicator, export_vtu, screenshot, \
-        show_interactive
+        show_interactive, efield_screenshot, peak_efield_air
 
     cvt3 = CVTParams(n_elements=args.n_elements, n_elements_c2=args.n_c2,
                      rated_capacitance_pF=args.rated_pf,
@@ -253,11 +253,29 @@ def _streamer_compare(args, op: OperatingParams, matdb, out: str) -> dict:
     screenshot(vtu, os.path.join(out, "view3d_streamer.png"), field_key)
     print(f"[phase7] wrote {vtu} + view3d_streamer.png "
           f"(view the 'phi_phase_mrad' field to see the streak)")
+
+    # --- electric-field magnitude (dielectric-breakdown view) ----------------
+    # |E| governs air breakdown (~3 kV/mm), not the phase angle.  Report the peak
+    # air-gap field overall and specifically at the clean sheds BELOW the streak
+    # (where the wet/dry triple junction concentrates the field), and render a
+    # |E| view of that region.
+    e_all, loc_all = peak_efield_air(solB, r_max=0.40)
+    e_below, loc_below = peak_efield_air(solB, r_max=0.40,
+                                         z_range=(cvt3.tank_height, z_lo))
+    print(f"[phase7] peak |E| in air gap: {e_all:.3f} kV/mm overall"
+          + (f" (r={loc_all[0]:.3f}, z={loc_all[1]:.3f} m)" if loc_all else "")
+          + f";  {e_below:.3f} kV/mm at the clean sheds below the streak"
+          + (f" (r={loc_below[0]:.3f}, z={loc_below[1]:.3f} m)" if loc_below else "")
+          + f"  [air strength ~3 kV/mm]")
+    efield_screenshot(vtu, os.path.join(out, "view3d_efield_streamer.png"),
+                      z_bot=cvt3.tank_height, z_top=z_hi + 0.05)  # auto colour scale
+    print(f"[phase7] wrote view3d_efield_streamer.png (|E| at the bottom sheds)")
     if args.show:
         show_interactive(vtu, field_key)
 
     return {"sheet_S": sheet, "width_deg": args.streamer_width_deg,
             "z_range": [z_lo, z_hi], "n_sheds": n, "theta_clean_mdeg": th0,
+            "peak_E_air_kVmm": e_all, "peak_E_below_streak_kVmm": e_below,
             "uniform": {"C_pF": obsA.C1_pF, "tan_delta": obsA.tan_delta,
                         "dtheta_mdeg": _ph(obsA) - th0,
                         "leakage_mA": obsA.surface_leakage_mA},
