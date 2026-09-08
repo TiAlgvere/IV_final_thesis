@@ -26,6 +26,12 @@ signatures for predictive diagnostics and downstream ML.
 ## Quick start
 
 ```powershell
+# 0. clone.  The study-record paths run to ~122 characters, so on Windows either
+#    keep the clone root short (e.g. C:\dev\) or lift the 260-char MAX_PATH limit
+#    once, otherwise checkout fails with "Filename too long":
+git config --global core.longpaths true
+git clone https://github.com/TiAlgvere/IV_final_thesis
+
 # 1. virtual environment + editable install (core + dashboard/viz/sweep/test extras)
 python -m venv .venv; .\.venv\Scripts\Activate.ps1
 pip install -e ".[dashboard,viz,sweep,dev]"
