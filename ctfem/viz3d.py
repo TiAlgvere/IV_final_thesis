@@ -79,23 +79,52 @@ def peak_efield_air(sol, r_max: float = 0.40, z_range=None):
     return float(e[i]), (float(r[i]), float(z[i]))
 
 
+def creepage_efield_profile(sol, r_band=(0.12, 0.22), z_range=None,
+                            nbins: int = 30):
+    """Air-side |E| envelope along the external creepage path: the peak |E|
+    [kV/mm] over AIR cells in the radial band `r_band` (just outside the
+    insulator wall/sheds), binned by height z.  Returns (z_centers, peak_per_bin).
+
+    This is the *flashover-relevant* field -- external and air-side -- as opposed
+    to the internal dielectric field a solid cutaway shows.  A surface streamer
+    flattens it over the wet (coated) region and spikes it at the wet/dry edge.
+    """
+    e = cell_efield_kvmm(sol)
+    r, z = sol.centroids_rz[:, 0], sol.centroids_rz[:, 1]
+    air = (sol.region_per_cell == "air") & (r >= r_band[0]) & (r <= r_band[1])
+    if not np.any(air):
+        return np.array([]), np.array([])
+    z0, z1 = z_range if z_range else (float(z[air].min()), float(z[air].max()))
+    edges = np.linspace(z0, z1, nbins + 1)
+    zc = 0.5 * (edges[:-1] + edges[1:])
+    peak = np.full(nbins, np.nan)
+    for i in range(nbins):
+        m = air & (z >= edges[i]) & (z < edges[i + 1])
+        if np.any(m):
+            peak[i] = float(e[m].max())
+    return zc, peak
+
+
 def efield_screenshot(vtu_path: str, png_path: str, z_bot: float, z_top: float,
-                      r_box: float = 0.35, clim=None) -> None:
-    """Off-screen |E| render cropped to a column [|x|,|y| < r_box, z_bot..z_top]
-    around the insulator -- keeps the near-shed AIR gap (the device mask would
-    strip it).  `clim=None` auto-scales the colour map to the cropped field range
-    so the field concentration is clearly visible (the absolute vs-3-kV/mm air-
-    breakdown comparison is reported separately as the peak value); pass an
-    explicit clim (e.g. (0, 3)) to put it on the breakdown scale instead."""
+                      r_box: float = 0.30, clim=None, air_only: bool = True) -> None:
+    """Off-screen |E| render cropped to a column [|x|,|y| < r_box, z_bot..z_top].
+
+    With `air_only=True` (default) it keeps ONLY the air (device mask == 0), so
+    the picture shows the air-side / external field that governs flashover -- not
+    the internal capacitor-stack field, which is higher and would otherwise set
+    the colour scale and bury the streamer's air-gap concentration.  `clim=None`
+    auto-scales to the cropped range."""
     import pyvista as pv
     grid = pv.read(vtu_path)
+    if air_only:
+        grid = grid.threshold(0.5, scalars="device", invert=True)   # keep air
     box = grid.clip_box([-r_box, r_box, -r_box, r_box, z_bot, z_top], invert=False)
     cut = box.clip(normal=[0.0, 1.0, 0.0])      # cross-section to see inside
     if clim is None:
         clim = cut.get_data_range("E_kV_mm")
     pl = pv.Plotter(off_screen=True, window_size=(900, 1100))
     pl.add_mesh(cut, scalars="E_kV_mm", cmap="turbo", clim=clim,
-                scalar_bar_args={"title": "|E| [kV/mm]"})
+                scalar_bar_args={"title": "air-side |E| [kV/mm]"})
     pl.add_axes()
     pl.view_isometric()
     pl.screenshot(png_path)
