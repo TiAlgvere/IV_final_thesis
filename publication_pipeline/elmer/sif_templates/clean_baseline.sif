@@ -1,0 +1,67 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "mesh"
+End
+
+Simulation
+  Coordinate System = "Cartesian 2D"
+  Simulation Type = Steady State
+  Steady State Max Iterations = 1
+  Output Intervals = 1
+  Output File = "case.result"
+  Post File = "case.vtu"
+End
+
+Constants
+  Permittivity Of Vacuum = 8.854187817e-12
+End
+
+Equation 1
+  Name = "EQS"
+  Active Solvers(1) = 1
+End
+
+Solver 1
+  Equation = EQS
+  Procedure = "StatElecSolve" "StatElecSolver"
+  Variable = Potential
+  Variable DOFs = 1
+  Linear System Solver = Direct
+End
+
+Material 1
+  Name = "Air"
+  Relative Permittivity = 1.0
+End
+
+Material 2
+  Name = "Porcelain"
+  Relative Permittivity = 5.0
+End
+
+Body 1
+  Name = "AirDomain"
+  Equation = 1
+  Material = 1
+End
+
+Body 2
+  Name = "PorcelainDomain"
+  Equation = 1
+  Material = 2
+End
+
+Boundary Condition 1
+  Name = "HV_TERMINAL"
+  Target Boundaries(1) = {{HV_BOUNDARY_ID}}
+  Potential = Real 110000.0
+End
+
+Boundary Condition 2
+  Name = "GROUND"
+  Target Boundaries(1) = {{GROUND_BOUNDARY_ID}}
+  Potential = Real 0.0
+End
+
+! Future complex admittivity or frequency-domain terms will be added here
+! once the clean baseline is validated against capacitive divider theory.

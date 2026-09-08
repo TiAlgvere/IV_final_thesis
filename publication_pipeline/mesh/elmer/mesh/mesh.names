@@ -1,0 +1,7 @@
+! ----- names for bodies -----
+$ AIR = 1
+$ PORCELAIN = 2
+! ----- names for boundaries -----
+$ HV_TERMINAL = 3
+$ GROUND = 4
+$ TAP_ELECTRODE = 5

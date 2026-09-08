@@ -1,0 +1,89 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "mesh"
+End
+
+Simulation
+  Coordinate System = "Cartesian 2D"
+  Simulation Type = Steady State
+  Steady State Max Iterations = 1
+  Output Intervals = 1
+  Frequency = {{FREQUENCY}}
+  Output File = "case.result"
+  Post File = "case.vtu"
+End
+
+Constants
+  Permittivity Of Vacuum = 8.8541878128e-12
+End
+
+Equation 1
+  Name = "ComplexEQS"
+  Active Solvers(1) = 1
+End
+
+Solver 1
+  Equation = "ComplexEQS"
+  Procedure = "ComplexEQS" "ComplexEQSSolver"
+  Variable = Potential[Potential Re:1 Potential Im:1]
+  Linear System Complex = True
+  Linear System Solver = Direct
+  Linear System Direct Method = UMFPack
+  Steady State Convergence Tolerance = 1.0e-9
+End
+
+! --- Materials ---------------------------------------------------------------
+! The pollution layer's relative permittivity equals porcelain's so that at
+! Electric Conductivity = 0 the layer is dielectrically identical to porcelain
+! and the case reduces exactly to the clean baseline.
+Material 1
+  Name = "Air"
+  Relative Permittivity = 1.0
+  Electric Conductivity = 0.0
+End
+
+Material 2
+  Name = "Porcelain"
+  Relative Permittivity = 5.0
+  Electric Conductivity = 0.0
+End
+
+Material 3
+  Name = "PollutionLayer"
+  Relative Permittivity = 5.0
+  Electric Conductivity = {{POLLUTION_SIGMA}}
+End
+
+! --- Bodies (ids resolved from mesh.names by the sweep driver) ----------------
+Body {{AIR_BODY_ID}}
+  Name = "AirDomain"
+  Equation = 1
+  Material = 1
+End
+
+Body {{PORCELAIN_BODY_ID}}
+  Name = "PorcelainDomain"
+  Equation = 1
+  Material = 2
+End
+
+Body {{POLLUTION_BODY_ID}}
+  Name = "PollutionLayerDomain"
+  Equation = 1
+  Material = 3
+End
+
+! --- Boundary conditions (complex Dirichlet, HV phase = 0 reference) ----------
+Boundary Condition 1
+  Name = "HV_TERMINAL"
+  Target Boundaries(1) = {{HV_BOUNDARY_ID}}
+  Potential Re = Real {{HV_VOLTAGE}}
+  Potential Im = Real 0.0
+End
+
+Boundary Condition 2
+  Name = "GROUND"
+  Target Boundaries(1) = {{GROUND_BOUNDARY_ID}}
+  Potential Re = Real 0.0
+  Potential Im = Real 0.0
+End

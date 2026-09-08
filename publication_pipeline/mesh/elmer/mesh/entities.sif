@@ -1,0 +1,22 @@
+!------ Skeleton for body section -----
+Body 1
+  Name = AIR
+End
+
+Body 2
+  Name = PORCELAIN
+End
+
+!------ Skeleton for boundary section -----
+Boundary Condition 1
+  Name = HV_TERMINAL
+End
+
+Boundary Condition 2
+  Name = GROUND
+End
+
+Boundary Condition 3
+  Name = TAP_ELECTRODE
+End
+

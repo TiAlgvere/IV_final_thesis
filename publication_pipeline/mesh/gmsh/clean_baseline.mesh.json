@@ -1,0 +1,53 @@
+{
+  "geometry": "clean_baseline_axisymmetric",
+  "output_msh": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\mesh\\gmsh\\clean_baseline.msh",
+  "parameters": {
+    "inner_radius": 0.04,
+    "porcelain_radius": 0.11,
+    "outer_radius": 0.18,
+    "air_height": 0.28,
+    "porcelain_height": 0.18,
+    "hv_tip_height": 0.03,
+    "ground_base_height": 0.02,
+    "mesh_size_air": 0.025,
+    "mesh_size_porcelain": 0.015,
+    "mesh_size_electrode": 0.01
+  },
+  "physical_groups": {
+    "HV_TERMINAL": {
+      "dim": 1,
+      "tag": 3,
+      "entities": [
+        2
+      ]
+    },
+    "GROUND": {
+      "dim": 1,
+      "tag": 4,
+      "entities": [
+        7
+      ]
+    },
+    "TAP_ELECTRODE": {
+      "dim": 1,
+      "tag": 5,
+      "entities": [
+        4
+      ]
+    },
+    "AIR": {
+      "dim": 2,
+      "tag": 1,
+      "entities": [
+        3
+      ]
+    },
+    "PORCELAIN": {
+      "dim": 2,
+      "tag": 2,
+      "entities": [
+        2
+      ]
+    }
+  }
+}
