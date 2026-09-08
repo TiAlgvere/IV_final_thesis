@@ -1,15 +1,53 @@
-results/
+# ---------------------------------------------------------------------------
+# Python / environments
+# ---------------------------------------------------------------------------
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+.venv-1/
+.env
+
+# ---------------------------------------------------------------------------
+# Compiled Elmer solver artifacts
+# Rebuild with: python publication_pipeline/scripts/build_solver.py
+# ---------------------------------------------------------------------------
+*.dll
+*.o
+*.mod
+
+# ---------------------------------------------------------------------------
+# Heavy, regenerable simulation artifacts (meshes, field dumps)
+# ---------------------------------------------------------------------------
 *.msh
 *.tags.json
 *.xdmf
 *.h5
+*.vtu
 *.bp/
-__pycache__/
-*.pyc
-.pytest_cache/
-*.png
 *.parquet
-*.csv
-.ipynb_checkpoints/
-.venv/
-*.egg-info/
+
+# ...but keep the tiny reference mesh so run_elmer_case.py works on a fresh clone
+!publication_pipeline/mesh/gmsh/clean_baseline.msh
+
+# ---------------------------------------------------------------------------
+# Third-party clone, not part of this thesis. Re-clone with:
+#   git clone https://github.com/rishabh10gpt/gmesh-mcp.git
+# ---------------------------------------------------------------------------
+gmesh-mcp/
+
+# ---------------------------------------------------------------------------
+# Legacy scikit-fem run output (~72 MB of meshes/VTUs, regenerable by the
+# scripts/phase*.py entry points). Only the curated thesis deliverables ship.
+# ---------------------------------------------------------------------------
+results/*
+!results/Thesis_Data_Final/
+
+# ---------------------------------------------------------------------------
+# Elmer pipeline: the processed study record (reports, figures, observables)
+# is version-controlled; the ~3.2 GB of raw solver output is not.
+# Regenerate with the matching publication_pipeline/scripts/run_*.py.
+# ---------------------------------------------------------------------------
+publication_pipeline/results/raw/
