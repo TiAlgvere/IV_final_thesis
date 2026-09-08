@@ -1,0 +1,199 @@
+{
+  "regions": [
+    {
+      "region": "head",
+      "expected": [
+        "air",
+        "metal",
+        "oil"
+      ],
+      "actual": [
+        "air",
+        "metal",
+        "oil"
+      ],
+      "unexpected": [],
+      "porcelain_frac": 0.0,
+      "volumes_m3": {
+        "air": 0.004682,
+        "metal": 0.009073,
+        "oil": 0.009185
+      },
+      "pass": true
+    },
+    {
+      "region": "tank",
+      "expected": [
+        "air",
+        "metal",
+        "oil",
+        "resin"
+      ],
+      "actual": [
+        "air",
+        "metal",
+        "oil",
+        "resin"
+      ],
+      "unexpected": [],
+      "porcelain_frac": 0.0,
+      "volumes_m3": {
+        "air": 0.022796,
+        "metal": 0.040058,
+        "oil": 0.047058,
+        "resin": 0.00019
+      },
+      "pass": true
+    },
+    {
+      "region": "secondary_box",
+      "expected": [
+        "air",
+        "metal"
+      ],
+      "actual": [
+        "metal"
+      ],
+      "unexpected": [],
+      "porcelain_frac": 0.0,
+      "volumes_m3": {
+        "metal": 0.004185
+      },
+      "pass": true
+    },
+    {
+      "region": "porcelain_column",
+      "expected": [
+        "air",
+        "element",
+        "metal",
+        "oil",
+        "porcelain"
+      ],
+      "actual": [
+        "air",
+        "element",
+        "metal",
+        "oil",
+        "porcelain"
+      ],
+      "unexpected": [],
+      "porcelain_frac": 0.2145,
+      "volumes_m3": {
+        "air": 0.046375,
+        "element": 0.017323,
+        "metal": 0.000318,
+        "oil": 0.012283,
+        "porcelain": 0.02083
+      },
+      "pass": true
+    },
+    {
+      "region": "C1",
+      "expected": [
+        "element",
+        "metal",
+        "oil"
+      ],
+      "actual": [
+        "element",
+        "oil",
+        "porcelain"
+      ],
+      "unexpected": [
+        "porcelain"
+      ],
+      "porcelain_frac": 0.0176,
+      "volumes_m3": {
+        "element": 0.014436,
+        "oil": 0.00348,
+        "porcelain": 0.000321
+      },
+      "pass": true
+    },
+    {
+      "region": "tap",
+      "expected": [
+        "element",
+        "metal",
+        "oil"
+      ],
+      "actual": [
+        "metal",
+        "oil",
+        "porcelain"
+      ],
+      "unexpected": [
+        "porcelain"
+      ],
+      "porcelain_frac": 0.0048,
+      "volumes_m3": {
+        "metal": 0.000106,
+        "oil": 2.6e-05,
+        "porcelain": 1e-06
+      },
+      "pass": true
+    },
+    {
+      "region": "C2",
+      "expected": [
+        "element",
+        "metal",
+        "oil"
+      ],
+      "actual": [
+        "element",
+        "oil",
+        "porcelain"
+      ],
+      "unexpected": [
+        "porcelain"
+      ],
+      "porcelain_frac": 0.0191,
+      "volumes_m3": {
+        "element": 0.002887,
+        "oil": 0.000699,
+        "porcelain": 7e-05
+      },
+      "pass": true
+    },
+    {
+      "region": "emu",
+      "expected": [
+        "metal",
+        "oil"
+      ],
+      "actual": [
+        "metal",
+        "oil"
+      ],
+      "unexpected": [],
+      "porcelain_frac": 0.0,
+      "volumes_m3": {
+        "metal": 0.012581,
+        "oil": 0.003209
+      },
+      "pass": true
+    },
+    {
+      "region": "air_far",
+      "expected": [
+        "air"
+      ],
+      "actual": [],
+      "unexpected": [],
+      "porcelain_frac": 0.0,
+      "volumes_m3": {},
+      "pass": true
+    }
+  ],
+  "total_material_volumes_m3": {
+    "metal": 0.0532736439553909,
+    "element": 0.01735337242026662,
+    "oil": 0.06872754800303059,
+    "resin": 0.00019085175370558006,
+    "porcelain": 0.020813254379629373,
+    "air": 6.277707154489525
+  },
+  "note": "porcelain in head/tank/box bbox > 2% volume => FAIL"
+}

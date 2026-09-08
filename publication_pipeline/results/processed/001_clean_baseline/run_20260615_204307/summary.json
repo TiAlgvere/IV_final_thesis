@@ -1,0 +1,19 @@
+{
+  "solver": "C:\\ElmerFEM-gui-nompi-Windows-AMD64\\bin\\ElmerSolver.exe",
+  "returncode": 0,
+  "success": true,
+  "run_raw_dir": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\001_clean_baseline\\run_20260615_204307",
+  "run_processed_dir": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\processed\\001_clean_baseline\\run_20260615_204307",
+  "vtu_source_path": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\001_clean_baseline\\run_20260615_204307\\mesh\\case_t0001.vtu",
+  "vtu_path": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\001_clean_baseline\\run_20260615_204307\\case.vtu",
+  "boundary_ids": {
+    "HV_TERMINAL": 3,
+    "GROUND": 4,
+    "TAP_ELECTRODE": 5
+  },
+  "potential_field": "potential",
+  "vtap_value": 0.0,
+  "vtap_expected": 29117.647058823524,
+  "vtap_error": -29117.647058823524,
+  "validation_figure": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\processed\\001_clean_baseline\\run_20260615_204307\\potential_distribution_and_vtap.png"
+}

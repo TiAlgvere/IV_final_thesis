@@ -1,0 +1,46 @@
+{
+  "solver": "iterative",
+  "solve_seconds": 62.7418270111084,
+  "mesh": {
+    "n_nodes": 298368,
+    "n_tets": 1665550,
+    "n_boundary_tris": 338655,
+    "qmin": 0.014402051554391717,
+    "creepage_mm": 3077.665357868932,
+    "n_sheds": 74
+  },
+  "true3d_v4": {
+    "C_pF": 5616.322409860372,
+    "vtap_abs": 11821.681316922233,
+    "vtap_phase_mdeg": 6.029912924749887,
+    "divider_ratio": 0.16646953391704927,
+    "stored_energy_J": 14.161556956462931,
+    "tan_delta": 0.0019898018216959854,
+    "emax": 1341184.3077209848,
+    "emax_rz": [
+      0.007271513655013498,
+      1.8478286550725
+    ],
+    "n_tap_nodes": 456
+  },
+  "axisymmetric": {
+    "C_pF": 5616.373988484827,
+    "vtap_abs": 11829.524170462191,
+    "vtap_phase_mdeg": -0.12181833330130719,
+    "divider_ratio": 0.16657997473662267,
+    "stored_energy_J": 14.161687011964496,
+    "tan_delta": 0.001999533317504881
+  },
+  "delta_vs_axisym_pct": {
+    "C_pF": -0.0009183616433094954,
+    "vtap_abs": -0.06629897726183609,
+    "vtap_phase_mdeg": -5049.922364998554,
+    "divider_ratio": -0.06629897726183609,
+    "stored_energy_J": -0.0009183616433205977
+  },
+  "targets": {
+    "C_pF": 5600,
+    "divider_ratio": 0.16666666666666666,
+    "creepage_mm": 3075
+  }
+}

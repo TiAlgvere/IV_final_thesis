@@ -1,0 +1,128 @@
+{
+  "config": {
+    "T_ref_C": 20.0,
+    "alpha_eps_per_K": 0.0002,
+    "k_tand_per_K": 0.01732867951399863,
+    "f_tand_model": "exp(k_tand*(T-T_ref)); ~doubles per 40 K",
+    "freq_ref_Hz": 50.0,
+    "temps_C": [
+      -30,
+      -20,
+      -10,
+      0,
+      20,
+      40,
+      60
+    ],
+    "freqs_Hz": [
+      49.8,
+      50.0,
+      50.2
+    ],
+    "note": "uniform temperature -> divider ratio invariant; volume_leak ~ linear in f"
+  },
+  "baseline": {
+    "T": 20.0,
+    "f": 50.0,
+    "vtap_abs": 11829.524170462191,
+    "phase_mdeg": -0.12181833330130719,
+    "tan_delta": 0.001999533317504881,
+    "surface_leak": 0.0,
+    "volume_leak": 0.00025054112378946686,
+    "U0": 71014.08311032398
+  },
+  "temperature": [
+    {
+      "T": -30,
+      "vtap_abs": 11829.458894504962,
+      "dvtap_pct": -0.0005518054343456313,
+      "dtheta_mdeg": 0.03100835924550767,
+      "tan_delta": 0.0008445343482442462,
+      "surface_leak": 0.0,
+      "volume_leak": 0.00010476626001335794
+    },
+    {
+      "T": -20,
+      "vtap_abs": 11829.472054632046,
+      "dvtap_pct": -0.0004405572818888537,
+      "dtheta_mdeg": 0.026709473653392768,
+      "tan_delta": 0.0010030761312189269,
+      "surface_leak": 0.0,
+      "volume_leak": 0.00012468400873440931
+    },
+    {
+      "T": -10,
+      "vtap_abs": 11829.485161843115,
+      "dvtap_pct": -0.00032975645101185336,
+      "dtheta_mdeg": 0.021646414303733374,
+      "tan_delta": 0.0011916139249533869,
+      "surface_leak": 0.0,
+      "volume_leak": 0.00014841692094039858
+    },
+    {
+      "T": 0,
+      "vtap_abs": 11829.498216588267,
+      "dvtap_pct": -0.00021939913685820045,
+      "dtheta_mdeg": 0.015513584331212249,
+      "tan_delta": 0.0014158234383926925,
+      "surface_leak": 0.0,
+      "volume_leak": 0.00017669578475379495
+    },
+    {
+      "T": 20,
+      "vtap_abs": 11829.524170462191,
+      "dvtap_pct": 0.0,
+      "dtheta_mdeg": 0.0,
+      "tan_delta": 0.001999533317504881,
+      "surface_leak": 0.0,
+      "volume_leak": 0.00025054112378946686
+    },
+    {
+      "T": 40,
+      "vtap_abs": 11829.54992128346,
+      "dvtap_pct": 0.00021768264637511692,
+      "dtheta_mdeg": -0.021822424570118917,
+      "tan_delta": 0.0028250241425114603,
+      "surface_leak": 0.0,
+      "volume_leak": 0.0003553848687895346
+    },
+    {
+      "T": 60,
+      "vtap_abs": 11829.575476926593,
+      "dvtap_pct": 0.0004337153689526474,
+      "dtheta_mdeg": -0.052346053681824586,
+      "tan_delta": 0.003992449569712127,
+      "surface_leak": 0.0,
+      "volume_leak": 0.0005042382239446961
+    }
+  ],
+  "frequency_check": [
+    {
+      "f": 49.8,
+      "vtap_abs": 11829.524170598612,
+      "dvtap_pct": 1.1532108601386426e-09,
+      "dtheta_mdeg": 0.00022175029241752742,
+      "tan_delta": 0.001999506172466242,
+      "surface_leak": 0.0,
+      "volume_leak": 0.00024953557165867553
+    },
+    {
+      "f": 50.0,
+      "vtap_abs": 11829.524170462191,
+      "dvtap_pct": 0.0,
+      "dtheta_mdeg": 0.0,
+      "tan_delta": 0.001999533317504881,
+      "surface_leak": 0.0,
+      "volume_leak": 0.00025054112378946686
+    },
+    {
+      "f": 50.2,
+      "vtap_abs": 11829.524170337882,
+      "dvtap_pct": -1.0508482972682032e-09,
+      "dtheta_mdeg": -0.00025285191924193096,
+      "tan_delta": 0.0019995604625435218,
+      "surface_leak": 0.0,
+      "volume_leak": 0.0002515467031301815
+    }
+  ]
+}

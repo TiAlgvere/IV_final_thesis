@@ -1,0 +1,27 @@
+{
+  "case": "009_representative_cvt",
+  "timestamp": "20260616_152530",
+  "frequency_hz": 50.0,
+  "u0_v": 71014.08311032398,
+  "eps_r_eff": 35146.20075804631,
+  "tap_disc_index": 10,
+  "divider_ratio_nominal": 0.16666666666666666,
+  "rated_capacitance_pF": 5600.0,
+  "creepage_mm": 3062.389571417914,
+  "observables": {
+    "C_total_F": 5.6163739884848275e-09,
+    "C_total_pF": 5616.373988484827,
+    "tan_delta": 0.001999533317504881,
+    "p_loss": 8.895974093669583,
+    "i_leak": 0.00025054112378946686,
+    "vtap_re": 11829.524170435454,
+    "vtap_im": -0.025151118117925454,
+    "vtap_abs": 11829.524170462191,
+    "vtap_phase_deg": -0.00012181833330130719,
+    "vtap_phase_mdeg": -0.12181833330130719,
+    "divider_ratio": 0.16657997473662267,
+    "u0": 71014.08311032398,
+    "n_tap_nodes": 93
+  },
+  "run_dir": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\009_representative_cvt\\run_20260616_152530"
+}

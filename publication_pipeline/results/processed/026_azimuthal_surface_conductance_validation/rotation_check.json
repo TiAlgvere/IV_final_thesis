@@ -1,0 +1,56 @@
+{
+  "sigma_s": 1e-06,
+  "sector_width_deg": 30,
+  "cases": [
+    {
+      "sector_deg": [
+        0,
+        30
+      ],
+      "C_pF": 5623.444931286058,
+      "divider_ratio": 0.16656266403921197,
+      "tan_delta": 0.014385916589074073,
+      "surface_leak": 0.0015551614846727934,
+      "phase_mdeg": -29.72201473131007,
+      "polluted_area_m2": 0.19516431191209516,
+      "solve_s": 106.2,
+      "d_surface_leak_pct": 0.0,
+      "d_tan_delta_pct": 0.0
+    },
+    {
+      "sector_deg": [
+        90,
+        120
+      ],
+      "C_pF": 5623.4405158156305,
+      "divider_ratio": 0.16658884219835104,
+      "tan_delta": 0.014536081699026664,
+      "surface_leak": 0.0015740000954361977,
+      "phase_mdeg": -4.302907861441823,
+      "polluted_area_m2": 0.19694847817375727,
+      "solve_s": 92.4,
+      "d_surface_leak_pct": 1.2113604245650444,
+      "d_tan_delta_pct": 1.0438341486467273
+    },
+    {
+      "sector_deg": [
+        180,
+        210
+      ],
+      "C_pF": 5623.435199439832,
+      "divider_ratio": 0.16653775484701513,
+      "tan_delta": 0.014489128374517914,
+      "surface_leak": 0.0015681068954443481,
+      "phase_mdeg": -58.01285323921119,
+      "polluted_area_m2": 0.19619343347923413,
+      "solve_s": 88.5,
+      "d_surface_leak_pct": 0.8324158551469285,
+      "d_tan_delta_pct": 0.7174501868183247
+    }
+  ],
+  "spread": {
+    "surface_leak_spread_pct": 1.2113604245650444,
+    "tan_delta_spread_pct": 1.0438341486467273
+  },
+  "rotation_invariant": true
+}

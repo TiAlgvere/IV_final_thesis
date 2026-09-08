@@ -1,0 +1,84 @@
+{
+  "case": "006_pollution_sweep",
+  "timestamp": "20260615_225522",
+  "frequency_hz": 50.0,
+  "hv_voltage": 110000.0,
+  "n_points": 3,
+  "sigma_list": [
+    0.0,
+    1e-06,
+    0.0001
+  ],
+  "params": {
+    "pollution_thickness": 0.005,
+    "mesh_size_air": 0.025,
+    "mesh_size_pollution": 0.002
+  },
+  "body_boundary_ids": {
+    "bodies": {
+      "AIR": 1,
+      "PORCELAIN": 2,
+      "POLLUTION_LAYER": 3
+    },
+    "boundaries": {
+      "HV_TERMINAL": 4,
+      "GROUND": 5,
+      "TAP_ELECTRODE": 6,
+      "POLLUTION_SURFACE": 7
+    }
+  },
+  "csv": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\006_pollution_sweep\\run_20260615_225522\\pollution_sweep.csv",
+  "rows": [
+    {
+      "vtap_re": 29117.647058824678,
+      "vtap_im": 0.0,
+      "vtap_abs": 29117.647058824678,
+      "phase_deg": 0.0,
+      "tan_delta": 0.0,
+      "p_loss": 0.0,
+      "i_leak": 0.0,
+      "i_terminal": 0.00040497189518139386,
+      "emax": 808823.5294117616,
+      "int_sigma_e2": 0.0,
+      "int_eps_e2": 0.14179721364910583,
+      "n_tap_nodes": 24,
+      "sigma": 0.0,
+      "sigma_over_we": 0.0,
+      "vtu_path": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\006_pollution_sweep\\run_20260615_225522\\clean\\mesh\\case_t0001.vtu"
+    },
+    {
+      "vtap_re": 12173.10500507633,
+      "vtap_im": 5765.407571651257,
+      "vtap_abs": 13469.387882597637,
+      "phase_deg": 25.343100262551875,
+      "tan_delta": 0.046528056358545435,
+      "p_loss": 1.1936639804216305,
+      "i_leak": 2.1702981462211463e-05,
+      "i_terminal": 0.00046695397187589,
+      "emax": 1833557.5485355633,
+      "int_sigma_e2": 2.387327960843261,
+      "int_eps_e2": 0.16332298208279505,
+      "n_tap_nodes": 24,
+      "sigma": 1e-06,
+      "sigma_over_we": 71.90041433808938,
+      "vtu_path": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\006_pollution_sweep\\run_20260615_225522\\sigma_1.000e-06\\mesh\\case_t0001.vtu"
+    },
+    {
+      "vtap_re": 10109.53994226383,
+      "vtap_im": 65.13752228468944,
+      "vtap_abs": 10109.749786272514,
+      "phase_deg": 0.3691615535400154,
+      "tan_delta": 0.0005176977318722844,
+      "p_loss": 0.013504630840821664,
+      "i_leak": 2.455387425603939e-07,
+      "i_terminal": 0.00047428984202020944,
+      "emax": 1903897.1177453755,
+      "int_sigma_e2": 0.02700926168164333,
+      "int_eps_e2": 0.1660682379406881,
+      "n_tap_nodes": 24,
+      "sigma": 0.0001,
+      "sigma_over_we": 7190.041433808938,
+      "vtu_path": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\006_pollution_sweep\\run_20260615_225522\\sigma_1.000e-04\\mesh\\case_t0001.vtu"
+    }
+  ]
+}

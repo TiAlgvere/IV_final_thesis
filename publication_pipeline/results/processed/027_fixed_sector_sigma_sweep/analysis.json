@@ -1,0 +1,165 @@
+{
+  "n_cases": 11,
+  "clean_tan_delta": 0.0019900353382068013,
+  "surface_leak_monotonic": true,
+  "P_direct_monotonic": true,
+  "tan_delta_monotonic": true,
+  "slopes_surface_leak": [
+    {
+      "from": 1e-10,
+      "to": 3e-10,
+      "slope": 0.416
+    },
+    {
+      "from": 3e-10,
+      "to": 1e-09,
+      "slope": 0.583
+    },
+    {
+      "from": 1e-09,
+      "to": 3e-09,
+      "slope": 0.813
+    },
+    {
+      "from": 3e-09,
+      "to": 1e-08,
+      "slope": 0.955
+    },
+    {
+      "from": 1e-08,
+      "to": 3e-08,
+      "slope": 0.995
+    },
+    {
+      "from": 3e-08,
+      "to": 1e-07,
+      "slope": 1.0
+    },
+    {
+      "from": 1e-07,
+      "to": 3e-07,
+      "slope": 0.997
+    },
+    {
+      "from": 3e-07,
+      "to": 1e-06,
+      "slope": 1.0
+    },
+    {
+      "from": 1e-06,
+      "to": 3e-06,
+      "slope": 1.0
+    },
+    {
+      "from": 3e-06,
+      "to": 1e-05,
+      "slope": 1.0
+    }
+  ],
+  "linear_regime": {
+    "sigma_lo": 3e-09,
+    "sigma_hi": 1e-05
+  },
+  "numerical_floor_regime": {
+    "sigma_below": 3e-09,
+    "note": "sub-linear slope is a numerical floor, not physical saturation"
+  },
+  "saturation": null,
+  "specific_leak": {
+    "1e-10": 6476.0,
+    "3e-10": 3408.1,
+    "1e-09": 2062.1,
+    "3e-09": 1679.1,
+    "1e-08": 1590.5,
+    "3e-08": 1581.1,
+    "1e-07": 1580.3,
+    "3e-07": 1574.9,
+    "1e-06": 1574.2,
+    "3e-06": 1573.8,
+    "1e-05": 1573.9
+  },
+  "volume_loss_crossover_sigma": 1.3773590454079438e-07,
+  "power_consistency_max_rel_err": 2.220446049250313e-16,
+  "emax_min": 1387295.3165445009,
+  "emax_max": 1387586.9813385091,
+  "emax_spread_pct": 0.021023987505031094,
+  "emax_ever_on_insulator": false,
+  "phase_range_mdeg": [
+    -184.57592204784183,
+    219.81921731498167
+  ],
+  "recommend": {
+    "weak": 1e-07,
+    "medium": 1e-06,
+    "severe": 1e-05,
+    "rationale": "All three lie in the clean linear regime (slope=1, well above the low-sigma numerical floor) and have saved q_s fields. weak 1e-7: surface loss just emerging above the volume-loss background (P~11 W); medium 1e-6: clearly polluted (tan-delta~1.5e-2, P~112 W); severe 1e-5: heavily polluted (tan-delta~0.13, P~1.1 kW, max q_s~1.3e4 W/m^2). No saturation regime exists."
+  },
+  "angle": 30,
+  "analysis_10deg": {
+    "n_cases": 6,
+    "clean_tan_delta": 0.0019900353382068013,
+    "surface_leak_monotonic": true,
+    "P_direct_monotonic": true,
+    "tan_delta_monotonic": true,
+    "slopes_surface_leak": [
+      {
+        "from": 1e-10,
+        "to": 1e-09,
+        "slope": 0.496
+      },
+      {
+        "from": 1e-09,
+        "to": 1e-08,
+        "slope": 0.844
+      },
+      {
+        "from": 1e-08,
+        "to": 1e-07,
+        "slope": 0.994
+      },
+      {
+        "from": 1e-07,
+        "to": 1e-06,
+        "slope": 0.999
+      },
+      {
+        "from": 1e-06,
+        "to": 1e-05,
+        "slope": 1.0
+      }
+    ],
+    "linear_regime": {
+      "sigma_lo": 1e-08,
+      "sigma_hi": 1e-05
+    },
+    "numerical_floor_regime": {
+      "sigma_below": 1e-08,
+      "note": "sub-linear slope is a numerical floor, not physical saturation"
+    },
+    "saturation": null,
+    "specific_leak": {
+      "1e-10": 2567.7,
+      "1e-09": 804.2,
+      "1e-08": 561.9,
+      "1e-07": 553.9,
+      "1e-06": 552.5,
+      "1e-05": 552.1
+    },
+    "volume_loss_crossover_sigma": 2.4591583512009175e-07,
+    "power_consistency_max_rel_err": 2.220446049250313e-16,
+    "emax_min": 1387388.5416451173,
+    "emax_max": 1387586.9813385091,
+    "emax_spread_pct": 0.01430310885777164,
+    "emax_ever_on_insulator": false,
+    "phase_range_mdeg": [
+      -285.02360507496377,
+      298.3712211044178
+    ],
+    "recommend": {
+      "weak": 1e-07,
+      "medium": 1e-06,
+      "severe": 1e-05,
+      "rationale": "All three lie in the clean linear regime (slope=1, well above the low-sigma numerical floor) and have saved q_s fields. weak 1e-7: surface loss just emerging above the volume-loss background (P~11 W); medium 1e-6: clearly polluted (tan-delta~1.5e-2, P~112 W); severe 1e-5: heavily polluted (tan-delta~0.13, P~1.1 kW, max q_s~1.3e4 W/m^2). No saturation regime exists."
+    }
+  }
+}

@@ -1,0 +1,1443 @@
+{
+  "head_bbox": {
+    "bbox": [
+      -0.18,
+      -0.18,
+      1.61,
+      0.18,
+      0.18,
+      1.79
+    ],
+    "volumes_by_material": {
+      "air": 0.00465767,
+      "metal": 0.00907299,
+      "oil": 0.00918538
+    },
+    "unexpected": []
+  },
+  "tank_bbox": {
+    "bbox": [
+      -0.225,
+      -0.225,
+      -0.0,
+      0.225,
+      0.225,
+      0.55
+    ],
+    "volumes_by_material": {
+      "air": 0.02272521,
+      "metal": 0.04005608,
+      "oil": 0.04705777,
+      "resin": 0.00018951
+    },
+    "unexpected": []
+  },
+  "secondary_box_bbox": {
+    "bbox": [
+      0.185,
+      -0.075,
+      0.11,
+      0.34,
+      0.075,
+      0.29
+    ],
+    "volumes_by_material": {
+      "metal": 0.004185
+    },
+    "unexpected": []
+  },
+  "porcelain_stack_bbox": {
+    "bbox": [
+      -0.1515,
+      -0.1515,
+      0.55,
+      0.1515,
+      0.1515,
+      1.61
+    ],
+    "volumes_by_material": {
+      "air": 0.0462483,
+      "element": 0.01732298,
+      "metal": 0.00031768,
+      "oil": 0.01228341,
+      "porcelain": 0.02083024
+    },
+    "unexpected": []
+  },
+  "tap_bbox": {
+    "bbox": [
+      -0.075,
+      -0.075,
+      0.7197,
+      0.075,
+      0.075,
+      0.7257
+    ],
+    "volumes_by_material": {
+      "metal": 0.00010593,
+      "oil": 2.453e-05,
+      "porcelain": 6.3e-07
+    },
+    "unexpected": [
+      {
+        "material": "porcelain",
+        "volume_m3": 6.3e-07,
+        "centroid_rz": [
+          0.0981,
+          0.7251
+        ],
+        "frac": 0.0048,
+        "r_range": [
+          0.0981,
+          0.0981
+        ]
+      }
+    ]
+  },
+  "emu_bbox": {
+    "bbox": [
+      -0.12,
+      -0.12,
+      0.1,
+      0.12,
+      0.12,
+      0.38
+    ],
+    "volumes_by_material": {
+      "metal": 0.01258093,
+      "oil": 0.00320581
+    },
+    "unexpected": []
+  },
+  "resin_bbox": {
+    "bbox": [
+      -0.045,
+      -0.045,
+      0.52,
+      0.045,
+      0.045,
+      0.55
+    ],
+    "volumes_by_material": {
+      "metal": 5.114e-05,
+      "resin": 0.00018951
+    },
+    "unexpected": []
+  },
+  "head_closeup_window": {
+    "window_z": [
+      1.55,
+      1.9
+    ],
+    "porcelain_volume": 0.00116612,
+    "porcelain_z_range": [
+      1.55,
+      1.6098
+    ],
+    "note": "porcelain in this window is the adjacent insulator column, see z-range"
+  },
+  "tank_closeup_window": {
+    "window_z": [
+      -0.35,
+      0.58
+    ],
+    "porcelain_volume": 0.00059032,
+    "porcelain_z_range": [
+      0.5501,
+      0.58
+    ],
+    "note": "porcelain in this window is the adjacent insulator column, see z-range"
+  },
+  "floating_check": [
+    {
+      "component": "secondary_box",
+      "expected_parents": [
+        "tank_metal"
+      ],
+      "shared_nodes": {
+        "tank_metal": 74
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    },
+    {
+      "component": "oil_valve",
+      "expected_parents": [
+        "tank_metal"
+      ],
+      "shared_nodes": {
+        "tank_metal": 100
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    },
+    {
+      "component": "oil_level",
+      "expected_parents": [
+        "tank_metal"
+      ],
+      "shared_nodes": {
+        "tank_metal": 144
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    },
+    {
+      "component": "resin",
+      "expected_parents": [
+        "tank_metal",
+        "stack_bottom",
+        "base_oil",
+        "element_c2"
+      ],
+      "shared_nodes": {
+        "tank_metal": 114,
+        "stack_bottom": 102,
+        "base_oil": 74,
+        "element_c2": 0
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    },
+    {
+      "component": "terminal",
+      "expected_parents": [
+        "head_metal"
+      ],
+      "shared_nodes": {
+        "head_metal": 28
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    },
+    {
+      "component": "terminal_cap",
+      "expected_parents": [
+        "terminal",
+        "head_metal"
+      ],
+      "shared_nodes": {
+        "terminal": 105,
+        "head_metal": 0
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    },
+    {
+      "component": "base_emu",
+      "expected_parents": [
+        "base_oil"
+      ],
+      "shared_nodes": {
+        "base_oil": 479
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    },
+    {
+      "component": "reactor",
+      "expected_parents": [
+        "base_oil"
+      ],
+      "shared_nodes": {
+        "base_oil": 239
+      },
+      "touches_parent": true,
+      "min_distance_m": 0.0,
+      "status": "ATTACHED"
+    }
+  ],
+  "stack_metal": {
+    "stack_bottom": {
+      "material": "metal",
+      "z_range": [
+        0.5505,
+        0.5556
+      ],
+      "r_max": 0.0743,
+      "volume_m3": 0.00010588
+    },
+    "element_c2": {
+      "material": "element",
+      "z_range": [
+        0.557,
+        0.7189
+      ],
+      "r_max": 0.0742,
+      "volume_m3": 0.00288707
+    },
+    "foil_tap": {
+      "material": "metal",
+      "z_range": [
+        0.7203,
+        0.725
+      ],
+      "r_max": 0.0744,
+      "volume_m3": 0.00010593
+    },
+    "element_c1": {
+      "material": "element",
+      "z_range": [
+        0.7264,
+        1.5431
+      ],
+      "r_max": 0.0742,
+      "volume_m3": 0.01443591
+    },
+    "stack_top": {
+      "material": "metal",
+      "z_range": [
+        1.5447,
+        1.5494
+      ],
+      "r_max": 0.0742,
+      "volume_m3": 0.00010588
+    },
+    "resin": {
+      "material": "resin",
+      "z_range": [
+        0.5213,
+        0.549
+      ],
+      "r_max": 0.0438,
+      "volume_m3": 0.00018951
+    }
+  },
+  "stack_metal_note": "foil_tap = intermediate voltage tap (between C1 and C2); stack_top = HV electrode terminal; stack_bottom = ground electrode terminal. All are intentional thin electrodes at the C1/C2 boundaries.",
+  "worst100": [
+    {
+      "eta": 0.0741,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.232
+      ],
+      "dist_insulator_m": 0.3254,
+      "dist_HV_m": 1.3177
+    },
+    {
+      "eta": 0.0741,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.245
+      ],
+      "dist_insulator_m": 0.3128,
+      "dist_HV_m": 1.3049
+    },
+    {
+      "eta": 0.0784,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.118
+      ],
+      "dist_insulator_m": 0.4383,
+      "dist_HV_m": 1.4315
+    },
+    {
+      "eta": 0.079,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.126
+      ],
+      "dist_insulator_m": 0.4304,
+      "dist_HV_m": 1.4236
+    },
+    {
+      "eta": 0.0793,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.247
+      ],
+      "dist_insulator_m": 0.3109,
+      "dist_HV_m": 1.3029
+    },
+    {
+      "eta": 0.0793,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.17
+      ],
+      "dist_insulator_m": 0.3869,
+      "dist_HV_m": 1.3798
+    },
+    {
+      "eta": 0.0794,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.273
+      ],
+      "dist_insulator_m": 0.2858,
+      "dist_HV_m": 1.2774
+    },
+    {
+      "eta": 0.0794,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.205
+      ],
+      "dist_insulator_m": 0.3527,
+      "dist_HV_m": 1.3452
+    },
+    {
+      "eta": 0.0795,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.273
+      ],
+      "dist_insulator_m": 0.2858,
+      "dist_HV_m": 1.2774
+    },
+    {
+      "eta": 0.0795,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.204
+      ],
+      "dist_insulator_m": 0.3528,
+      "dist_HV_m": 1.3453
+    },
+    {
+      "eta": 0.0795,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.23
+      ],
+      "dist_insulator_m": 0.3274,
+      "dist_HV_m": 1.3196
+    },
+    {
+      "eta": 0.0798,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.144
+      ],
+      "dist_insulator_m": 0.4126,
+      "dist_HV_m": 1.4057
+    },
+    {
+      "eta": 0.0798,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.17
+      ],
+      "dist_insulator_m": 0.3871,
+      "dist_HV_m": 1.38
+    },
+    {
+      "eta": 0.0799,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.152
+      ],
+      "dist_insulator_m": 0.4048,
+      "dist_HV_m": 1.3978
+    },
+    {
+      "eta": 0.0802,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.145
+      ],
+      "dist_insulator_m": 0.4111,
+      "dist_HV_m": 1.4042
+    },
+    {
+      "eta": 0.0805,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.119
+      ],
+      "dist_insulator_m": 0.4368,
+      "dist_HV_m": 1.43
+    },
+    {
+      "eta": 0.0809,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.282
+      ],
+      "dist_insulator_m": 0.2766,
+      "dist_HV_m": 1.268
+    },
+    {
+      "eta": 0.081,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.282
+      ],
+      "dist_insulator_m": 0.2766,
+      "dist_HV_m": 1.268
+    },
+    {
+      "eta": 0.0814,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.179
+      ],
+      "dist_insulator_m": 0.378,
+      "dist_HV_m": 1.3708
+    },
+    {
+      "eta": 0.0817,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.256
+      ],
+      "dist_insulator_m": 0.3024,
+      "dist_HV_m": 1.2943
+    },
+    {
+      "eta": 0.0818,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.196
+      ],
+      "dist_insulator_m": 0.3615,
+      "dist_HV_m": 1.3542
+    },
+    {
+      "eta": 0.0818,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.221
+      ],
+      "dist_insulator_m": 0.3362,
+      "dist_HV_m": 1.3285
+    },
+    {
+      "eta": 0.0819,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.153
+      ],
+      "dist_insulator_m": 0.4035,
+      "dist_HV_m": 1.3964
+    },
+    {
+      "eta": 0.082,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.256
+      ],
+      "dist_insulator_m": 0.3025,
+      "dist_HV_m": 1.2943
+    },
+    {
+      "eta": 0.082,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.196
+      ],
+      "dist_insulator_m": 0.3616,
+      "dist_HV_m": 1.3542
+    },
+    {
+      "eta": 0.0821,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.179
+      ],
+      "dist_insulator_m": 0.3781,
+      "dist_HV_m": 1.3708
+    },
+    {
+      "eta": 0.0822,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.221
+      ],
+      "dist_insulator_m": 0.3363,
+      "dist_HV_m": 1.3286
+    },
+    {
+      "eta": 0.0823,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.199,
+        0.128
+      ],
+      "dist_insulator_m": 0.4288,
+      "dist_HV_m": 1.4219
+    },
+    {
+      "eta": 0.0842,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.12
+      ],
+      "dist_insulator_m": 0.4362,
+      "dist_HV_m": 1.4294
+    },
+    {
+      "eta": 0.0844,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.28
+      ],
+      "dist_insulator_m": 0.2789,
+      "dist_HV_m": 1.2704
+    },
+    {
+      "eta": 0.0845,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.12
+      ],
+      "dist_insulator_m": 0.436,
+      "dist_HV_m": 1.4292
+    },
+    {
+      "eta": 0.0852,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.146
+      ],
+      "dist_insulator_m": 0.4108,
+      "dist_HV_m": 1.4038
+    },
+    {
+      "eta": 0.0856,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.28
+      ],
+      "dist_insulator_m": 0.2784,
+      "dist_HV_m": 1.2698
+    },
+    {
+      "eta": 0.0857,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.197,
+        0.287
+      ],
+      "dist_insulator_m": 0.2716,
+      "dist_HV_m": 1.2632
+    },
+    {
+      "eta": 0.0868,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.248
+      ],
+      "dist_insulator_m": 0.3095,
+      "dist_HV_m": 1.3015
+    },
+    {
+      "eta": 0.0869,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.203
+      ],
+      "dist_insulator_m": 0.354,
+      "dist_HV_m": 1.3466
+    },
+    {
+      "eta": 0.0869,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.177
+      ],
+      "dist_insulator_m": 0.3793,
+      "dist_HV_m": 1.3721
+    },
+    {
+      "eta": 0.087,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.171
+      ],
+      "dist_insulator_m": 0.3857,
+      "dist_HV_m": 1.3785
+    },
+    {
+      "eta": 0.087,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.126
+      ],
+      "dist_insulator_m": 0.4298,
+      "dist_HV_m": 1.423
+    },
+    {
+      "eta": 0.0872,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.197,
+        0.286
+      ],
+      "dist_insulator_m": 0.2721,
+      "dist_HV_m": 1.2638
+    },
+    {
+      "eta": 0.0872,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.171
+      ],
+      "dist_insulator_m": 0.3856,
+      "dist_HV_m": 1.3785
+    },
+    {
+      "eta": 0.0873,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.178
+      ],
+      "dist_insulator_m": 0.3793,
+      "dist_HV_m": 1.3721
+    },
+    {
+      "eta": 0.0875,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.197,
+        0.114
+      ],
+      "dist_insulator_m": 0.4421,
+      "dist_HV_m": 1.4354
+    },
+    {
+      "eta": 0.0875,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.152
+      ],
+      "dist_insulator_m": 0.4044,
+      "dist_HV_m": 1.3974
+    },
+    {
+      "eta": 0.0878,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.197
+      ],
+      "dist_insulator_m": 0.3604,
+      "dist_HV_m": 1.353
+    },
+    {
+      "eta": 0.088,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.255
+      ],
+      "dist_insulator_m": 0.3032,
+      "dist_HV_m": 1.2951
+    },
+    {
+      "eta": 0.0882,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.197,
+        0.114
+      ],
+      "dist_insulator_m": 0.4422,
+      "dist_HV_m": 1.4356
+    },
+    {
+      "eta": 0.0884,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.221
+      ],
+      "dist_insulator_m": 0.3365,
+      "dist_HV_m": 1.3288
+    },
+    {
+      "eta": 0.0885,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.256
+      ],
+      "dist_insulator_m": 0.3021,
+      "dist_HV_m": 1.294
+    },
+    {
+      "eta": 0.0885,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.127
+      ],
+      "dist_insulator_m": 0.4296,
+      "dist_HV_m": 1.4228
+    },
+    {
+      "eta": 0.0887,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.221
+      ],
+      "dist_insulator_m": 0.3363,
+      "dist_HV_m": 1.3287
+    },
+    {
+      "eta": 0.089,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.273
+      ],
+      "dist_insulator_m": 0.2851,
+      "dist_HV_m": 1.2767
+    },
+    {
+      "eta": 0.089,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.195
+      ],
+      "dist_insulator_m": 0.3618,
+      "dist_HV_m": 1.3545
+    },
+    {
+      "eta": 0.089,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.153
+      ],
+      "dist_insulator_m": 0.4032,
+      "dist_HV_m": 1.3962
+    },
+    {
+      "eta": 0.0893,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.553
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.9931
+    },
+    {
+      "eta": 0.0893,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.197,
+        0.107
+      ],
+      "dist_insulator_m": 0.4491,
+      "dist_HV_m": 1.4425
+    },
+    {
+      "eta": 0.0893,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.247
+      ],
+      "dist_insulator_m": 0.3108,
+      "dist_HV_m": 1.3028
+    },
+    {
+      "eta": 0.0894,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.273
+      ],
+      "dist_insulator_m": 0.2856,
+      "dist_HV_m": 1.2772
+    },
+    {
+      "eta": 0.0894,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.204
+      ],
+      "dist_insulator_m": 0.3528,
+      "dist_HV_m": 1.3454
+    },
+    {
+      "eta": 0.0895,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.197,
+        0.293
+      ],
+      "dist_insulator_m": 0.2651,
+      "dist_HV_m": 1.2566
+    },
+    {
+      "eta": 0.0895,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.23
+      ],
+      "dist_insulator_m": 0.3271,
+      "dist_HV_m": 1.3194
+    },
+    {
+      "eta": 0.0895,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.197,
+        0.107
+      ],
+      "dist_insulator_m": 0.449,
+      "dist_HV_m": 1.4424
+    },
+    {
+      "eta": 0.0897,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.23
+      ],
+      "dist_insulator_m": 0.3273,
+      "dist_HV_m": 1.3195
+    },
+    {
+      "eta": 0.0897,
+      "material": "oil",
+      "name": "base_oil",
+      "rz": [
+        0.197,
+        0.293
+      ],
+      "dist_insulator_m": 0.2651,
+      "dist_HV_m": 1.2566
+    },
+    {
+      "eta": 0.0897,
+      "material": "metal",
+      "name": "secondary_box",
+      "rz": [
+        0.199,
+        0.144
+      ],
+      "dist_insulator_m": 0.4125,
+      "dist_HV_m": 1.4056
+    },
+    {
+      "eta": 0.0899,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.553
+      ],
+      "dist_insulator_m": 0.0005,
+      "dist_HV_m": 0.993
+    },
+    {
+      "eta": 0.09,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.141,
+        0.553
+      ],
+      "dist_insulator_m": 0.0008,
+      "dist_HV_m": 0.9932
+    },
+    {
+      "eta": 0.0902,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.553
+      ],
+      "dist_insulator_m": 0.0011,
+      "dist_HV_m": 0.9931
+    },
+    {
+      "eta": 0.0903,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.868
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.6789
+    },
+    {
+      "eta": 0.0907,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.61
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.9359
+    },
+    {
+      "eta": 0.0908,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.84
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.7074
+    },
+    {
+      "eta": 0.0908,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.327
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.227
+    },
+    {
+      "eta": 0.0908,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.441
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.1218
+    },
+    {
+      "eta": 0.0909,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.269
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.2823
+    },
+    {
+      "eta": 0.0909,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.553
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.993
+    },
+    {
+      "eta": 0.0909,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.84
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.7074
+    },
+    {
+      "eta": 0.091,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.782
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.7645
+    },
+    {
+      "eta": 0.091,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.61
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.9358
+    },
+    {
+      "eta": 0.091,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.585
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.0259
+    },
+    {
+      "eta": 0.091,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.582
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.9644
+    },
+    {
+      "eta": 0.091,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.553
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.993
+    },
+    {
+      "eta": 0.0911,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.126
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.4229
+    },
+    {
+      "eta": 0.0913,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.696
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.8501
+    },
+    {
+      "eta": 0.0913,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.04
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.5081
+    },
+    {
+      "eta": 0.0913,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.097
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.4513
+    },
+    {
+      "eta": 0.0915,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.384
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.1729
+    },
+    {
+      "eta": 0.0915,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.499
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.0798
+    },
+    {
+      "eta": 0.0915,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.327
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.2269
+    },
+    {
+      "eta": 0.0915,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.327
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.227
+    },
+    {
+      "eta": 0.0915,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.668
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.8787
+    },
+    {
+      "eta": 0.0915,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.298
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.2545
+    },
+    {
+      "eta": 0.0915,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.84
+      ],
+      "dist_insulator_m": 0.0011,
+      "dist_HV_m": 0.7073
+    },
+    {
+      "eta": 0.0916,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.897
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.6504
+    },
+    {
+      "eta": 0.0916,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.499
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.0796
+    },
+    {
+      "eta": 0.0917,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.126
+      ],
+      "dist_insulator_m": 0.001,
+      "dist_HV_m": 0.423
+    },
+    {
+      "eta": 0.0918,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        1.413
+      ],
+      "dist_insulator_m": 0.0011,
+      "dist_HV_m": 0.1468
+    },
+    {
+      "eta": 0.0918,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.696
+      ],
+      "dist_insulator_m": 0.0011,
+      "dist_HV_m": 0.8501
+    },
+    {
+      "eta": 0.0918,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.983
+      ],
+      "dist_insulator_m": 0.0011,
+      "dist_HV_m": 0.5649
+    },
+    {
+      "eta": 0.0918,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.782
+      ],
+      "dist_insulator_m": 0.0011,
+      "dist_HV_m": 0.7645
+    },
+    {
+      "eta": 0.0918,
+      "material": "air",
+      "name": "air",
+      "rz": [
+        0.14,
+        0.582
+      ],
+      "dist_insulator_m": 0.0011,
+      "dist_HV_m": 0.9644
+    }
+  ],
+  "worst100_by_material": {
+    "oil": 32,
+    "metal": 32,
+    "air": 36
+  },
+  "worst100_by_name": {
+    "base_oil": 32,
+    "secondary_box": 32,
+    "air": 36
+  },
+  "worst100_on_insulator_surface_lt5mm": 36,
+  "worst100_near_HV_lt50mm": 1,
+  "insulator_surface_tri_quality": {
+    "n": 400886,
+    "min": 0.04329198725002975,
+    "mean": 0.7436719191643424,
+    "p5": 0.04329198725037854
+  },
+  "global_quality_minSICN": {
+    "min": 0.02612243644916181,
+    "mean": 0.7200528331330023,
+    "1": 0.04953711783873502,
+    "5": 0.13894039190553503,
+    "50": 0.7784380963065758,
+    "95": 0.9423764019531307
+  },
+  "n_slivers_lt_0.05": 29179
+}

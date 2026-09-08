@@ -1,0 +1,12 @@
+{
+  "T_amb_C": 40.0,
+  "h_conv": 10.0,
+  "k_thermal": {
+    "metal": 200.0,
+    "element": 0.25,
+    "porcelain": 1.5,
+    "oil": 0.13
+  },
+  "insul_hotspot_C": 105.0,
+  "U0": 71014.08311032398
+}

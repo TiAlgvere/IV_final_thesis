@@ -1,0 +1,6 @@
+fault;threshold;unit;ratio_pct;phase_min;note
+C1 element short;0.075;% shorted;0.0624;-0.0048;
+C2 element short;0.075;% shorted;-0.063;-0.0242;
+Internal moisture;4.0;% base C rise;-0.0323;-1.4866;
+Type A pollution;1e-6.50;sigma_s [S];0.0011;1.342;leak 6.26 mA
+Type B stork streamer;12;sheds bridged;0.1049;-0.0175;

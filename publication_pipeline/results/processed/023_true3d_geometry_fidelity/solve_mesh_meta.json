@@ -1,0 +1,108 @@
+{
+  "geometry": "cvt_ddb123_true3d_v2_sheds",
+  "output_msh": "C:\\Users\\Timo.Algvere\\OneDrive - Tallinna Linnakantselei\\IV_final_thesis\\publication_pipeline\\results\\raw\\023_true3d_geometry_fidelity\\cvt3d_v2_solve.msh",
+  "n_sheds": 27,
+  "n_nodes": 86400,
+  "n_tets": 482426,
+  "n_boundary_tris": 101642,
+  "quality_minSICN": {
+    "min": 0.12533939432704416,
+    "mean": 0.7453136536049687,
+    "1": 0.4119690870361514,
+    "5": 0.5128882109416122,
+    "50": 0.7597132144226425,
+    "95": 0.9334396414152516
+  },
+  "n_slivers_lt_0.05": 0,
+  "insulator_surface_tri_quality": {
+    "n": 88506,
+    "min": 0.15529546887275372,
+    "mean": 0.8477401633267797,
+    "p5": 0.549913184071491
+  },
+  "material_volumes_m3": {
+    "metal": 0.10616384054275989,
+    "element": 0.01735337242026662,
+    "oil": 0.012382587444124172,
+    "porcelain": 0.028852030689617884,
+    "air": 4.721053063766092
+  },
+  "element_epsr_eff": 35146.20075804631,
+  "divider_ratio_nominal": 0.16666666666666666,
+  "creepage_mm": 3062.389571417914,
+  "shed_pitch_mm": 39.25925925925927,
+  "shed_overhang_mm": 40.0,
+  "shed_lip_round_mm": 3.0,
+  "tap_z": 0.7226666666666667,
+  "lc": {
+    "foil_tap": 0.014,
+    "stack_bottom": 0.014,
+    "stack_top": 0.014,
+    "element_c1": 0.03,
+    "element_c2": 0.024,
+    "porcelain": 0.028,
+    "oil": 0.045,
+    "head_housing": 0.055,
+    "base_tank": 0.07,
+    "air": 0.4,
+    "shed": 0.035
+  },
+  "physical_groups": {
+    "hv_electrode": {
+      "dim": 2,
+      "n_entities": 10
+    },
+    "ground_electrode": {
+      "dim": 2,
+      "n_entities": 7
+    },
+    "insulator_surface": {
+      "dim": 2,
+      "n_entities": 165
+    },
+    "farfield": {
+      "dim": 2,
+      "n_entities": 3
+    },
+    "stack_bottom": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "element_c2": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "foil_tap": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "element_c1": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "stack_top": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "head_housing": {
+      "dim": 3,
+      "n_entities": 2
+    },
+    "base_tank": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "oil": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "porcelain": {
+      "dim": 3,
+      "n_entities": 1
+    },
+    "air": {
+      "dim": 3,
+      "n_entities": 1
+    }
+  }
+}
