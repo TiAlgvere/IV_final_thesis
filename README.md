@@ -255,8 +255,25 @@ ct-fem/
     util.py              # results dirs, JSON dump
   scripts/               # phase1..9 CLI entry points
   tests/                 # pytest (scikit-fem; runs on Windows)
-  results/               # timestamped run outputs (gitignored)
+  results/               # timestamped run outputs (gitignored except Thesis_Data_Final/)
+  publication_pipeline/  # ElmerFEM publication workflow -- see its own README
 ```
+
+### Two backends, deliberately
+
+This repository carries **two** FEM pipelines and keeps both:
+
+| | `ctfem/` + `scripts/phase*.py` | `publication_pipeline/` |
+|---|---|---|
+| Solver | scikit-fem (Windows-native, complex κ = σ + jωε) | ElmerFEM + custom `ComplexEQS` module |
+| Role | validated legacy prototype, dashboard, fast iteration | the publication / thesis-figure pipeline |
+| Output | `results/<phase>_<timestamp>/` | `publication_pipeline/results/processed/<study>/` |
+
+The scikit-fem prototype is **not** superseded — it is the cross-validation
+reference and the backend behind `streamlit run dashboard.py`. Everything in
+sections 1–10 below describes that pipeline. For the Elmer studies (001–027,
+including the true-3-D DDB-123 model and the electrothermal work), start at
+[`publication_pipeline/README.md`](publication_pipeline/README.md).
 
 ---
 
